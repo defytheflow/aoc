@@ -1,4 +1,6 @@
-with open("./input.txt") as f:
+from pathlib import Path
+
+with open(Path(__file__).parent.joinpath('input.txt')) as f:
     total = 0
     for line in f:
         s1, s2 = [[int(n) for n in s.split("-")] for s in line.strip().split(",")]

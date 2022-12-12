@@ -1,3 +1,5 @@
+from pathlib import Path
+
 POINTS = {
     "ROCK": 1,
     "PAPER": 2,
@@ -9,7 +11,7 @@ POINTS = {
 OPPONENT_ROCK, OPPONENT_PAPER, OPPONENT_SCISSORS = "ABC"
 LOSS, DRAW, WIN = "XYZ"
 
-with open("./input.txt") as f:
+with open(Path(__file__).parent.joinpath('input.txt')) as f:
     total = 0
     for line in f:
         opponent, me = line.strip().split(" ")

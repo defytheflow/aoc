@@ -1,4 +1,6 @@
-with open("./input.txt") as f:
+from pathlib import Path
+
+with open(Path(__file__).parent.joinpath('input.txt')) as f:
     stack_lines = []
     for line in f:
         if line == "\n":

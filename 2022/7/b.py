@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import Path
 
 
 @dataclass
@@ -10,7 +11,7 @@ class Dir:
     dirs: dict[str, Dir] = field(default_factory=dict)
 
 
-with open("./input.txt") as f:
+with open(Path(__file__).parent.joinpath('input.txt')) as f:
     fs = Dir(parent=None)
     current = fs
 

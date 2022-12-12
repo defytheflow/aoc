@@ -1,4 +1,6 @@
-with open("./input.txt") as f:
+from pathlib import Path
+
+with open(Path(__file__).parent.joinpath('input.txt')) as f:
     n_unique_characters = 4
     buffer = f.read()
     window = list(buffer[:n_unique_characters])

@@ -1,6 +1,7 @@
 import string
+from pathlib import Path
 
-with open("./input.txt") as f:
+with open(Path(__file__).parent.joinpath('input.txt')) as f:
     total = 0
     for line in f:
         line = line.strip()

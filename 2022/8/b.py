@@ -1,4 +1,6 @@
-with open("./input.txt") as f:
+from pathlib import Path
+
+with open(Path(__file__).parent.joinpath('input.txt')) as f:
     grid: list[list[int]] = []
     for line in f:
         grid.append(list(map(int, line.strip())))

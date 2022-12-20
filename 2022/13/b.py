@@ -1,3 +1,4 @@
+import functools
 from pathlib import Path
 from typing import Literal
 
@@ -31,10 +32,14 @@ def compare(left: PacketData, right: PacketData) -> Literal[-1, 1, 0]:
 
 with open(Path(__file__).parent.joinpath("input.txt")) as f:
     pairs = [line.split("\n") for line in f.read().split("\n\n")]
-    total = 0
 
-    for i, pair in enumerate(pairs, start=1):
-        if compare(eval(pair[0]), eval(pair[1])) == -1:
-            total += i
+    packet_a: list[PacketData] = [[2]]
+    packet_b: list[PacketData] = [[6]]
+    packets = [packet_a, packet_b]
 
-    print(total)
+    for pair in pairs:
+        packets.append(eval(pair[0]))
+        packets.append(eval(pair[1]))
+
+    packets.sort(key=functools.cmp_to_key(compare))
+    print((packets.index(packet_a) + 1) * (packets.index(packet_b) + 1))

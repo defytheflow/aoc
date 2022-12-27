@@ -1,4 +1,4 @@
-import functools
+from functools import cmp_to_key
 from pathlib import Path
 from typing import Literal
 
@@ -41,7 +41,7 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         packets.append(eval(pair[0]))
         packets.append(eval(pair[1]))
 
-    packets.sort(key=functools.cmp_to_key(compare))
+    packets.sort(key=cmp_to_key(compare))
     result = (packets.index(packet_a) + 1) * (packets.index(packet_b) + 1)
     assert result == 20592
     print(result)

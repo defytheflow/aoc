@@ -102,4 +102,6 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
                 move_points(points)
                 unique_tail_points.add(tail.as_tuple())
 
-    print(len(unique_tail_points))
+    n_positions = len(unique_tail_points)
+    assert n_positions == 2372
+    print(n_positions)

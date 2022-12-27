@@ -11,8 +11,9 @@ POINTS = {
 OPPONENT_ROCK, OPPONENT_PAPER, OPPONENT_SCISSORS = "ABC"
 ME_ROCK, ME_PAPER, ME_SCISSORS = "XYZ"
 
-with open(Path(__file__).parent.joinpath('input.txt')) as f:
+with open(Path(__file__).parent.joinpath("input.txt")) as f:
     total = 0
+
     for line in f:
         opponent, me = line.strip().split(" ")
         if me == ME_ROCK:
@@ -30,9 +31,12 @@ with open(Path(__file__).parent.joinpath('input.txt')) as f:
             if opponent == OPPONENT_PAPER:
                 total += POINTS["WIN"]
 
-        if ((opponent == OPPONENT_ROCK and me == ME_ROCK) or
-            (opponent == OPPONENT_PAPER and me == ME_PAPER) or
-            (opponent == OPPONENT_SCISSORS and me == ME_SCISSORS)):
+        if (
+            (opponent == OPPONENT_ROCK and me == ME_ROCK)
+            or (opponent == OPPONENT_PAPER and me == ME_PAPER)
+            or (opponent == OPPONENT_SCISSORS and me == ME_SCISSORS)
+        ):
             total += POINTS["DRAW"]
 
+    assert total == 15523
     print(total)

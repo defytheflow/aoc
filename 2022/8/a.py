@@ -1,6 +1,6 @@
 from pathlib import Path
 
-with open(Path(__file__).parent.joinpath('input.txt')) as f:
+with open(Path(__file__).parent.joinpath("input.txt")) as f:
     grid: list[list[int]] = []
     for line in f:
         grid.append(list(map(int, line.strip())))
@@ -53,4 +53,5 @@ with open(Path(__file__).parent.joinpath('input.txt')) as f:
                 if visible:
                     n_visible_trees += 1
 
+    assert n_visible_trees == 1851
     print(n_visible_trees)

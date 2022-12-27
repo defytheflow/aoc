@@ -16,6 +16,7 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
             x += count
 
         if cycle == 220:
+            assert total == 15140
             print(total)
             exit()
 

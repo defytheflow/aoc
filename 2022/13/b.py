@@ -42,4 +42,6 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         packets.append(eval(pair[1]))
 
     packets.sort(key=functools.cmp_to_key(compare))
-    print((packets.index(packet_a) + 1) * (packets.index(packet_b) + 1))
+    result = (packets.index(packet_a) + 1) * (packets.index(packet_b) + 1)
+    assert result == 20592
+    print(result)

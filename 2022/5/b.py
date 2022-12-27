@@ -28,4 +28,6 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         for crate in reversed(temp_stack):
             stacks[to_index].append(crate)
 
-    print("".join(stack[-1] for stack in stacks))
+    result = "".join(stack[-1] for stack in stacks)
+    assert result == "CNSFCGJSM"
+    print(result)

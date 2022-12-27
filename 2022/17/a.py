@@ -320,5 +320,8 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
     # )
     top_most_point = max(grid_points, key=lambda point: point.y, default=None)
     assert top_most_point is not None, "top_most_point is None"
-    print(top_most_point.y + 1)
+
+    result = top_most_point.y + 1
+    assert result == 3102
+    print(result)
     # print(len(grid))

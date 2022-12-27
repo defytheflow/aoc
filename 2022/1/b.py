@@ -1,8 +1,8 @@
 from pathlib import Path
 
-with open(Path(__file__).parent.joinpath('input.txt')) as f:
+with open(Path(__file__).parent.joinpath("input.txt")) as f:
     content = f.read()
-    lines = sorted(
-        sum(map(int, line.split("\n"))) for line in content.split("\n\n")
-    )
-    print(sum(lines[-3:]))
+    lines = sorted(sum(map(int, line.split("\n"))) for line in content.split("\n\n"))
+    result = sum(lines[-3:])
+    assert result == 208567
+    print(result)

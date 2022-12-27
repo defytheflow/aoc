@@ -37,4 +37,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         if compare(eval(pair[0]), eval(pair[1])) == -1:
             total += i
 
+    assert total == 5252
     print(total)

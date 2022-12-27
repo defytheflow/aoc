@@ -1,13 +1,16 @@
 import string
 from pathlib import Path
 
-with open(Path(__file__).parent.joinpath('input.txt')) as f:
+with open(Path(__file__).parent.joinpath("input.txt")) as f:
     total = 0
+
     for line in f:
         line = line.strip()
         length = len(line)
-        c1 = set(line[:length // 2])
-        c2 = set(line[length // 2:])
+        c1 = set(line[: length // 2])
+        c2 = set(line[length // 2 :])
         item = next(iter(c1 & c2))
         total += string.ascii_letters.index(item) + 1
+
+    assert total == 7674
     print(total)

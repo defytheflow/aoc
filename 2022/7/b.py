@@ -49,4 +49,6 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
     root_size = compute_size(fs)
     needed_size = 30_000_000 - (70_000_000 - root_size)
 
-    print(min([size for size in dir_sizes if size >= needed_size]))
+    dir_size = min([size for size in dir_sizes if size >= needed_size])
+    assert dir_size == 7991939
+    print(dir_size)

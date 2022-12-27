@@ -80,4 +80,6 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
             monkey.starting_items = []
 
     sorted_monkeys = sorted(monkeys, key=lambda monkey: monkey.n_inspected_items)
-    print(math.prod(monkey.n_inspected_items for monkey in sorted_monkeys[-2:]))
+    result = math.prod(monkey.n_inspected_items for monkey in sorted_monkeys[-2:])
+    assert result == 108240
+    print(result)

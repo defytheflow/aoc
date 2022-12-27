@@ -1,6 +1,6 @@
 from pathlib import Path
 
-with open(Path(__file__).parent.joinpath('input.txt')) as f:
+with open(Path(__file__).parent.joinpath("input.txt")) as f:
     grid: list[list[int]] = []
     for line in f:
         grid.append(list(map(int, line.strip())))
@@ -54,4 +54,5 @@ with open(Path(__file__).parent.joinpath('input.txt')) as f:
             if current_scenic_score > max_scenic_score:
                 max_scenic_score = current_scenic_score
 
+    assert max_scenic_score == 574080
     print(max_scenic_score)

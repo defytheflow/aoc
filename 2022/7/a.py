@@ -48,5 +48,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
 
     compute_size(fs)
     total = sum([size for size in dir_sizes if size <= 100_000])
-    assert total == 1513699
     print(total)
+    assert total == 1513699

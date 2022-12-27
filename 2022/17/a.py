@@ -322,6 +322,6 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
     assert top_most_point is not None, "top_most_point is None"
 
     result = top_most_point.y + 1
-    assert result == 3102
     print(result)
+    assert result == 3102
     # print(len(grid))

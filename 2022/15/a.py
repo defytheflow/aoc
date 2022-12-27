@@ -21,5 +21,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
                 xs.add(x)
 
     n_positions = len(xs) - 1  # minus the beacon position
-    assert n_positions == 4907780
     print(n_positions)
+    assert n_positions == 4907780

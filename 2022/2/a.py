@@ -38,5 +38,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         ):
             total += POINTS["DRAW"]
 
-    assert total == 15523
     print(total)
+    assert total == 15523

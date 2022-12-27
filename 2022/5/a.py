@@ -24,5 +24,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
             stacks[to_index].append(crate)
 
     result = "".join(stack[-1] for stack in stacks)
-    assert result == "RNZLFZSJH"
     print(result)
+    assert result == "RNZLFZSJH"

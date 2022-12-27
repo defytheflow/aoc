@@ -43,5 +43,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
 
         total += a_exposed_sides
 
-    assert total == 3448
     print(total)
+    assert total == 3448

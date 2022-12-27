@@ -9,5 +9,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
             result = i
             break
 
-    assert result == 1623
     print(result)
+    assert result == 1623

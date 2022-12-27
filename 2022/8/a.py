@@ -53,5 +53,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
                 if visible:
                     n_visible_trees += 1
 
-    assert n_visible_trees == 1851
     print(n_visible_trees)
+    assert n_visible_trees == 1851

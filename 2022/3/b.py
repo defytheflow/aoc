@@ -14,5 +14,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         total += string.ascii_letters.index(item) + 1
         i += 3
 
-    assert total == 2805
     print(total)
+    assert total == 2805

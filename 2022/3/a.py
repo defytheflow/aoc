@@ -12,5 +12,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         item = next(iter(c1 & c2))
         total += string.ascii_letters.index(item) + 1
 
-    assert total == 7674
     print(total)
+    assert total == 7674

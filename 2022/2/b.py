@@ -46,5 +46,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
             elif me == LOSS:
                 total += POINTS["PAPER"]
 
-    assert total == 15702
     print(total)
+    assert total == 15702

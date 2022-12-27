@@ -98,5 +98,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         grid[sand.y][sand.x].ch = "o"
         n_units += 1
 
-    assert n_units == 1298
     print(n_units)
+    assert n_units == 1298

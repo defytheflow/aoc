@@ -117,5 +117,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
     assert goal is not None, "goal is None"
 
     n_steps = a_star_search(grid, start, goal)
-    assert n_steps == 534
     print(n_steps)
+    assert n_steps == 534

@@ -43,5 +43,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
 
     packets.sort(key=cmp_to_key(compare))
     result = (packets.index(packet_a) + 1) * (packets.index(packet_b) + 1)
-    assert result == 20592
     print(result)
+    assert result == 20592

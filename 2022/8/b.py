@@ -54,5 +54,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
             if current_scenic_score > max_scenic_score:
                 max_scenic_score = current_scenic_score
 
-    assert max_scenic_score == 574080
     print(max_scenic_score)
+    assert max_scenic_score == 574080

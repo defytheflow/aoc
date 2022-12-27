@@ -66,5 +66,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
 
     sorted_counts = sorted(monkey_counts, reverse=True)
     result = sorted_counts[0] * sorted_counts[1]
-    assert result == 108240
     print(result)
+    assert result == 108240

@@ -9,5 +9,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         if a2 <= a1 <= b2 or a2 <= b1 <= b2 or a1 <= a2 <= b1 or a1 <= b2 <= b1:
             total += 1
 
-    assert total == 827
     print(total)
+    assert total == 827

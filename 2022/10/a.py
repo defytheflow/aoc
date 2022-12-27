@@ -35,5 +35,5 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
                 next_cycle()
                 next_cycle(count)
         except CustomStopError:
-            assert total == 15140
             print(total)
+            assert total == 15140

@@ -19,12 +19,12 @@ class Square:
     def __hash__(self) -> int:
         return hash((self.x, self.y))
 
-    def __eq__(self, other: Square) -> bool:
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, Square):
             return self.x == other.x and self.y == other.y
         return False
 
-    def __lt__(self, other: Square) -> bool:
+    def __lt__(self, other: object) -> bool:
         if isinstance(other, Square):
             return self.x < other.x and self.y < other.y
         return NotImplemented
@@ -78,7 +78,7 @@ def heuristic(start: Square, end: Square) -> int:
 def a_star_search(grid: Grid, start: Square, goal: Square) -> int | None:
     # The priority queue is sorted by the estimated cost.
     # We use a priority queue implemented with a heap to get the lowest value quickly.
-    queue = []
+    queue: list[tuple[int, Square]] = []
     heapq.heappush(queue, (0, start))  # 0 - estimated cost to reach the goal square.
     steps = {start: 0}
 
@@ -103,7 +103,7 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
     goal: Square | None = None
 
     for y, line in enumerate(f):
-        row = []
+        row: list[Square] = []
         for x, char in enumerate(line.rstrip("\n")):
             square = Square(x, y, char)
             if square.char == "S":

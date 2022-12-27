@@ -4,15 +4,6 @@ from pathlib import Path
 from typing import Literal
 
 
-def decrease_without_losing_divisibility(n, d):
-    # Find the GCD of n and d
-    gcd = math.gcd(n, d)
-    # print(f"{gcd=} {n % gcd=}")
-    # Decrease n by a multiple of the GCD to keep it divisible by d
-    n = n - (n % gcd)
-    return n
-
-
 @dataclass
 class Operation:
     type: Literal["+", "*"]
@@ -50,6 +41,7 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         value = second[2:]
         if value != "old":
             value = int(value)
+        assert second[0] in ("+", "*")
         operation = Operation(type=second[0], value=value)
 
         # parse test

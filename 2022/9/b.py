@@ -1,4 +1,3 @@
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -50,10 +49,10 @@ def print_small_grid(points: list[Point]) -> None:
             for i, point in enumerate(points):
                 if point.x == x and point.y == y:
                     char = "H" if i == 0 else str(i)
-                    sys.stdout.write(char)
+                    print(char, end="")
                     break
             else:
-                sys.stdout.write(".")
+                print(".", end="")
         print()
 
 
@@ -63,10 +62,10 @@ def print_big_grid(points: list[Point]) -> None:
             for i, point in enumerate(points):
                 if point.x == x and point.y == y:
                     char = "H" if i == 0 else str(i)
-                    sys.stdout.write(char)
+                    print(char, end="")
                     break
             else:
-                sys.stdout.write(".")
+                print(".", end="")
         print()
 
 
@@ -103,8 +102,4 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
                 move_points(points)
                 unique_tail_points.add(tail.as_tuple())
 
-        # print_step(direction, count)
-        # print_big_grid(points)
-
-    # print()
     print(len(unique_tail_points))

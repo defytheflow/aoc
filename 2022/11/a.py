@@ -41,6 +41,7 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
         value = second[2:]
         if value != "old":
             value = int(value)
+        assert second[0] in ("+", "*")
         operation = Operation(type=second[0], value=value)
 
         # parse test

@@ -1,14 +1,14 @@
 from pathlib import Path
 
-with open(Path(__file__).parent.joinpath('input.txt')) as f:
-    stack_lines = []
+with open(Path(__file__).parent.joinpath("input.txt")) as f:
+    stack_lines: list[str] = []
     for line in f:
         if line == "\n":
             break
         stack_lines.append(line)
 
     stack_lines = stack_lines[-2::-1]
-    stacks = []
+    stacks: list[list[str]] = []
     for i in range((len(stack_lines[0])) // 4):
         start = i * 4 + 1
         stack = [line[start : start + 1] for line in stack_lines]

@@ -5,7 +5,7 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
     cycle = 0
     total = 0
 
-    def next_cycle(count: int | None = None) -> bool:
+    def next_cycle(count: int | None = None) -> None:
         global x, cycle, total
         cycle += 1
 

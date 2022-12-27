@@ -1,4 +1,3 @@
-import sys
 from pathlib import Path
 
 with open(Path(__file__).parent.joinpath("input.txt")) as f:
@@ -6,14 +5,14 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
     cycle = 0
     current_pixel = 0
 
-    def next_cycle(count: int | None = None) -> bool:
+    def next_cycle(count: int | None = None) -> None:
         global x, cycle, current_pixel
         cycle += 1
 
         if x - 1 <= current_pixel <= x + 1:
-            sys.stdout.write("#")
+            print("#", end="")
         else:
-            sys.stdout.write(".")
+            print(".", end="")
 
         current_pixel += 1
 
@@ -21,7 +20,7 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
             x += count
 
         if cycle > 0 and cycle % 40 == 0:
-            sys.stdout.write("\n")
+            print()
             current_pixel = 0
 
         if cycle == 240:

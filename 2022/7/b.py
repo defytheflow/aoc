@@ -11,7 +11,7 @@ class Dir:
     dirs: dict[str, Dir] = field(default_factory=dict)
 
 
-with open(Path(__file__).parent.joinpath('input.txt')) as f:
+with open(Path(__file__).parent.joinpath("input.txt")) as f:
     fs = Dir(parent=None)
     current = fs
 
@@ -22,13 +22,16 @@ with open(Path(__file__).parent.joinpath('input.txt')) as f:
             if cmd == "cd":
                 dirname = rest[1]
                 if dirname == "..":
+                    assert current.parent is not None, "current.parent is None"
                     current = current.parent
                 elif dirname == "/":
                     current = fs
                 else:
+                    assert current is not None, "current is None"
                     current = current.dirs.setdefault(dirname, Dir(parent=current))
         elif first != "dir":
             fname = rest[0]
+            assert current is not None, "current is None"
             current.files.setdefault(fname, int(first))
 
     dir_sizes: list[int] = []

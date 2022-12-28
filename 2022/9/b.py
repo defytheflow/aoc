@@ -7,36 +7,40 @@ class Point:
     x: int
     y: int
 
-    def as_tuple(self) -> tuple[int, int]:
-        return self.x, self.y
+
+def are_touching(a: Point, b: Point) -> bool:
+    return abs(a.x - b.x) <= 1 and abs(a.y - b.y) <= 1
 
 
-def are_touching(point_a: Point, point_b: Point) -> bool:
-    return (
-        # overlap
-        point_a == point_b
-        # adjacent row
-        or (point_a.x == point_b.x and abs(point_a.y - point_b.y) == 1)
-        # adjacent col
-        or (point_a.y == point_b.y and abs(point_a.x - point_b.x) == 1)
-        # adjacent diagonal
-        or (abs(point_a.x - point_b.x) == 1 and abs(point_a.y - point_b.y) == 1)
-    )
+direction_to_velocity = {"L": (-1, 0), "R": (1, 0), "U": (0, 1), "D": (0, -1)}
 
-
-def move_points(points: list[Point]) -> None:
+with open(Path(__file__).parent.joinpath("input.txt")) as f:
+    points = [Point(0, 0) for _ in range(10)]
     head, *rest = points
-    leading = head
+    tail = rest[-1]
+    tail_visited = {(tail.x, tail.y)}
 
-    for point in rest:
-        if not are_touching(leading, point):
-            if leading.x != point.x:
-                point.x += 1 if leading.x > point.x else -1
+    for line in f:
+        direction, count = line.rstrip("\n").split(" ")
+        for _ in range(int(count)):
+            x, y = direction_to_velocity[direction]
+            head.x += x
+            head.y += y
 
-            if leading.y != point.y:
-                point.y += 1 if leading.y > point.y else -1
+            leading = head
+            for point in rest:
+                if not are_touching(leading, point):
+                    if leading.x != point.x:
+                        point.x += 1 if leading.x > point.x else -1
+                    if leading.y != point.y:
+                        point.y += 1 if leading.y > point.y else -1
+                leading = point
 
-        leading = point
+            tail_visited.add((tail.x, tail.y))
+
+    result = len(tail_visited)
+    print(result)
+    assert result == 2372
 
 
 def print_step(direction: str, count: int) -> None:
@@ -67,41 +71,3 @@ def print_big_grid(points: list[Point]) -> None:
             else:
                 print(".", end="")
         print()
-
-
-with open(Path(__file__).parent.joinpath("input.txt")) as f:
-    points = [Point(0, 0) for _ in range(10)]
-    unique_tail_points = {points[-1].as_tuple()}
-
-    for line in f:
-        direction, count = line.rstrip("\n").split(" ")
-        count = int(count)
-        head, *_, tail = points
-
-        if direction == "L":
-            for _ in range(count):
-                head.x -= 1
-                move_points(points)
-                unique_tail_points.add(tail.as_tuple())
-
-        elif direction == "R":
-            for _ in range(count):
-                head.x += 1
-                move_points(points)
-                unique_tail_points.add(tail.as_tuple())
-
-        elif direction == "U":
-            for _ in range(count):
-                head.y += 1
-                move_points(points)
-                unique_tail_points.add(tail.as_tuple())
-
-        elif direction == "D":
-            for _ in range(count):
-                head.y -= 1
-                move_points(points)
-                unique_tail_points.add(tail.as_tuple())
-
-    n_positions = len(unique_tail_points)
-    print(n_positions)
-    assert n_positions == 2372

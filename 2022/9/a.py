@@ -7,68 +7,41 @@ class Point:
     x: int
     y: int
 
-    def as_tuple(self) -> tuple[int, int]:
-        return self.x, self.y
+
+def are_touching(a: Point, b: Point) -> bool:
+    return abs(a.x - b.x) <= 1 and abs(a.y - b.y) <= 1
 
 
-def are_touching(point_a: Point, point_b: Point) -> bool:
-    return (
-        # overlap
-        point_a == point_b
-        # adjacent row
-        or (point_a.x == point_b.x and abs(point_a.y - point_b.y) == 1)
-        # adjacent col
-        or (point_a.y == point_b.y and abs(point_a.x - point_b.x) == 1)
-        # adjacent diagonal
-        or (abs(point_a.x - point_b.x) == 1 and abs(point_a.y - point_b.y) == 1)
-    )
-
+direction_to_velocity = {"L": (-1, 0), "R": (1, 0), "U": (0, 1), "D": (0, -1)}
 
 with open(Path(__file__).parent.joinpath("input.txt")) as f:
     head = Point(0, 0)
     tail = Point(0, 0)
-    unique_tail_points = {tail.as_tuple()}
+    tail_visited = {(tail.x, tail.y)}
 
     for line in f:
         direction, count = line.rstrip("\n").split(" ")
         count = int(count)
+        x, y = direction_to_velocity[direction]
 
-        if direction == "L":
-            for i in range(count):
-                head.x -= 1
+        if direction == "L" or direction == "R":
+            for _ in range(count):
+                head.x += x
                 if not are_touching(head, tail):
                     if head.x != tail.x and head.y != tail.y:
                         tail.y += 1 if tail.y < head.y else -1
-                    tail.x -= 1
-                unique_tail_points.add(tail.as_tuple())
+                    tail.x += x
+                tail_visited.add((tail.x, tail.y))
 
-        elif direction == "R":
-            for i in range(count):
-                head.x += 1
-                if not are_touching(head, tail):
-                    if head.x != tail.x and head.y != tail.y:
-                        tail.y += 1 if tail.y < head.y else -1
-                    tail.x += 1
-                unique_tail_points.add(tail.as_tuple())
-
-        elif direction == "U":
-            for i in range(count):
-                head.y += 1
+        elif direction == "U" or direction == "D":
+            for _ in range(count):
+                head.y += y
                 if not are_touching(head, tail):
                     if head.x != tail.x and head.y != tail.y:
                         tail.x += 1 if tail.x < head.x else -1
-                    tail.y += 1
-                unique_tail_points.add(tail.as_tuple())
+                    tail.y += y
+                tail_visited.add((tail.x, tail.y))
 
-        elif direction == "D":
-            for i in range(count):
-                head.y -= 1
-                if not are_touching(head, tail):
-                    if head.x != tail.x and head.y != tail.y:
-                        tail.x += 1 if tail.x < head.x else -1
-                    tail.y -= 1
-                unique_tail_points.add(tail.as_tuple())
-
-    n_positions = len(unique_tail_points)
-    print(n_positions)
-    assert n_positions == 5683
+    result = len(tail_visited)
+    print(result)
+    assert result == 5683

@@ -4,10 +4,10 @@ from typing import NamedTuple
 Point = NamedTuple("Point", [("x", int), ("y", int), ("z", int)])
 
 
-with open(Path(__file__).parent.joinpath("input.txt")) as f:
+def solve_one(data: str) -> int:
     points: list[Point] = []
 
-    for line in f:
+    for line in data.split("\n"):
         x, y, z = map(int, line.rstrip("\n").split(","))
         points.append(Point(x, y, z))
 
@@ -43,5 +43,20 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
 
         total += a_exposed_sides
 
-    print(total)
-    assert total == 3448
+    return total
+
+
+def solve_two(data: str) -> ...:
+    ...
+
+
+if __name__ == "__main__":
+    data = (Path(__file__).parent / "input.txt").read_text().strip()
+
+    solution_one = solve_one(data)
+    print(solution_one)
+    assert solution_one == 3448
+
+    # solution_two = solve_two(data)
+    # print(solution_two)
+    # assert solution_two == ...

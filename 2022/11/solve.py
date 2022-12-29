@@ -28,9 +28,52 @@ def test(divisor: int, true_monkey: int, false_monkey: int, worry: int) -> int:
     return true_monkey if worry % divisor == 0 else false_monkey
 
 
-with open(Path(__file__).parent.joinpath("input.txt")) as f:
+def solve_one(data: str) -> int:
     monkeys: list[Monkey] = []
-    groups = f.read().split("\n\n")
+    groups = data.split("\n\n")
+
+    for group in groups:
+        lines = group.split("\n")
+
+        # parse items
+        items = [
+            int(item) for item in lines[1].replace("  Starting items: ", "").split(",")
+        ]
+
+        # parse operation
+        op, value = lines[2].replace("  Operation: new = old ", "").split(" ")
+        value = int(value) if value != "old" else value
+        assert op in ("+", "*")
+        operation_fn = partial(operation, op, value)
+
+        # parse test
+        divisor = int(lines[3].replace("  Test: divisible by ", ""))
+        true_monkey = int(lines[4].replace("    If true: throw to monkey ", ""))
+        false_monkey = int(lines[5].replace("    If false: throw to monkey ", ""))
+        test_fn = partial(test, divisor, true_monkey, false_monkey)
+
+        monkeys.append(
+            Monkey(items=items, operation=operation_fn, test=test_fn, divisor=divisor)
+        )
+
+    monkey_counts = [0] * len(monkeys)
+
+    for _ in range(20):
+        for i, monkey in enumerate(monkeys):
+            while len(monkey.items) > 0:
+                item = monkey.items.pop(0)
+                new_item = math.floor(monkey.operation(item) / 3)
+                next_monkey = monkey.test(new_item)
+                monkeys[next_monkey].items.append(new_item)
+                monkey_counts[i] += 1
+
+    sorted_counts = sorted(monkey_counts, reverse=True)
+    return sorted_counts[0] * sorted_counts[1]
+
+
+def solve_two(data: str) -> int:
+    monkeys: list[Monkey] = []
+    groups = data.split("\n\n")
 
     for group in groups:
         lines = group.split("\n")
@@ -69,6 +112,16 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
                 monkey_counts[i] += 1
 
     sorted_counts = sorted(monkey_counts, reverse=True)
-    result = sorted_counts[0] * sorted_counts[1]
-    print(result)
-    assert result == 25712998901
+    return sorted_counts[0] * sorted_counts[1]
+
+
+if __name__ == "__main__":
+    data = (Path(__file__).parent / "input.txt").read_text().strip()
+
+    solution_one = solve_one(data)
+    print(solution_one)
+    assert solution_one == 108240
+
+    solution_two = solve_two(data)
+    print(solution_two)
+    assert solution_two == 25712998901

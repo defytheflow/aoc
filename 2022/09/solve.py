@@ -14,13 +14,45 @@ def are_touching(a: Point, b: Point) -> bool:
 
 direction_to_velocity = {"L": (-1, 0), "R": (1, 0), "U": (0, 1), "D": (0, -1)}
 
-with open(Path(__file__).parent.joinpath("input.txt")) as f:
+
+def solve_one(data: str) -> int:
+    head = Point(0, 0)
+    tail = Point(0, 0)
+    tail_visited = {(tail.x, tail.y)}
+
+    for line in data.split("\n"):
+        direction, count = line.rstrip("\n").split(" ")
+        count = int(count)
+        x, y = direction_to_velocity[direction]
+
+        if direction == "L" or direction == "R":
+            for _ in range(count):
+                head.x += x
+                if not are_touching(head, tail):
+                    if head.x != tail.x and head.y != tail.y:
+                        tail.y += 1 if tail.y < head.y else -1
+                    tail.x += x
+                tail_visited.add((tail.x, tail.y))
+
+        elif direction == "U" or direction == "D":
+            for _ in range(count):
+                head.y += y
+                if not are_touching(head, tail):
+                    if head.x != tail.x and head.y != tail.y:
+                        tail.x += 1 if tail.x < head.x else -1
+                    tail.y += y
+                tail_visited.add((tail.x, tail.y))
+
+    return len(tail_visited)
+
+
+def solve_two(data: str) -> int:
     points = [Point(0, 0) for _ in range(10)]
     head, *rest = points
     tail = rest[-1]
     tail_visited = {(tail.x, tail.y)}
 
-    for line in f:
+    for line in data.split("\n"):
         direction, count = line.rstrip("\n").split(" ")
         for _ in range(int(count)):
             x, y = direction_to_velocity[direction]
@@ -38,9 +70,19 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
 
             tail_visited.add((tail.x, tail.y))
 
-    result = len(tail_visited)
-    print(result)
-    assert result == 2372
+    return len(tail_visited)
+
+
+if __name__ == "__main__":
+    data = (Path(__file__).parent / "input.txt").read_text().strip()
+
+    solution_one = solve_one(data)
+    print(solution_one)
+    assert solution_one == 5683
+
+    solution_two = solve_two(data)
+    print(solution_two)
+    assert solution_two == 2372
 
 
 def print_step(direction: str, count: int) -> None:

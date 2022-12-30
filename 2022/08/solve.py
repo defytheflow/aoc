@@ -123,4 +123,4 @@ if __name__ == "__main__":
 
     solution_two = solve_two(data)
     print(solution_two)
-    assert solution_two == 574080
+    assert solution_two == 574_080

@@ -88,8 +88,8 @@ if __name__ == "__main__":
 
     solution_one = solve_one(data)
     print(solution_one)
-    assert solution_one == 15523
+    assert solution_one == 15_523
 
     solution_two = solve_two(data)
     print(solution_two)
-    assert solution_two == 15702
+    assert solution_two == 15_702

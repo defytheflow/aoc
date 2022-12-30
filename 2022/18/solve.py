@@ -8,7 +8,7 @@ def solve_one(data: str) -> int:
     points: list[Point] = []
 
     for line in data.split("\n"):
-        x, y, z = map(int, line.rstrip("\n").split(","))
+        x, y, z = map(int, line.split(","))
         points.append(Point(x, y, z))
 
     total = 0

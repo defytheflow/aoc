@@ -65,4 +65,4 @@ if __name__ == "__main__":
 
     solution_two = solve_two(data)
     print(solution_two)
-    assert solution_two == 20592
+    assert solution_two == 20_592

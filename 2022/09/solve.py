@@ -21,7 +21,7 @@ def solve_one(data: str) -> int:
     tail_visited = {(tail.x, tail.y)}
 
     for line in data.split("\n"):
-        direction, count = line.rstrip("\n").split(" ")
+        direction, count = line.split(" ")
         count = int(count)
         x, y = direction_to_velocity[direction]
 
@@ -53,7 +53,7 @@ def solve_two(data: str) -> int:
     tail_visited = {(tail.x, tail.y)}
 
     for line in data.split("\n"):
-        direction, count = line.rstrip("\n").split(" ")
+        direction, count = line.split(" ")
         for _ in range(int(count)):
             x, y = direction_to_velocity[direction]
             head.x += x

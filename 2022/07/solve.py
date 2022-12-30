@@ -16,7 +16,7 @@ def build_fs(data: str) -> Dir:
     current = fs
 
     for line in data.split("\n"):
-        first, *rest = line.rstrip("\n").split(" ")
+        first, *rest = line.split(" ")
         if first == "$":
             cmd = rest[0]
             if cmd == "cd":
@@ -83,8 +83,8 @@ if __name__ == "__main__":
 
     solution_one = solve_one(data)
     print(solution_one)
-    assert solution_one == 1513699
+    assert solution_one == 1_513_699
 
     solution_two = solve_two(data)
     print(solution_two)
-    assert solution_two == 7991939
+    assert solution_two == 7_991_939

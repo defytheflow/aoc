@@ -114,4 +114,4 @@ with open(Path(__file__).parent.joinpath("input.txt")) as f:
 
     # print_grid(grid, int(min_x) - 6, int(max_x))
     print(n_units)
-    assert n_units == 25585
+    assert n_units == 25_585

@@ -26,7 +26,6 @@ def solve_one(data: str) -> int:
             raise CustomStopError
 
     for command in data.split("\n"):
-        command = command.rstrip("\n")
         try:
             if command == "noop":
                 next_cycle()
@@ -67,7 +66,6 @@ def solve_two(data: str) -> None:
             raise CustomStopError
 
     for command in data.split("\n"):
-        command = command.rstrip("\n")
         try:
             if command == "noop":
                 next_cycle()
@@ -84,7 +82,7 @@ if __name__ == "__main__":
 
     solution_one = solve_one(data)
     print(solution_one)
-    assert solution_one == 15140
+    assert solution_one == 15_140
 
     solution_two = solve_two(data)
     # print(solution_two)

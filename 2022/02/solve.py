@@ -1,86 +1,65 @@
 from pathlib import Path
+from typing import Literal
 
-POINTS = {
-    "ROCK": 1,
-    "PAPER": 2,
-    "SCISSORS": 3,
-    "DRAW": 3,
-    "WIN": 6,
+Shape = Literal["R", "P", "S"]
+Round = tuple[Shape, Shape]
+
+shape_map: dict[str, Shape] = {
+    "X": "R",
+    "Y": "P",
+    "Z": "S",
+    "A": "R",
+    "B": "P",
+    "C": "S",
 }
+
+wins: list[Round] = [("R", "S"), ("S", "P"), ("P", "R")]
+
+
+def solve(rounds: list[Round]) -> int:
+    score_map: dict[Shape, int] = {"R": 1, "P": 2, "S": 3}
+    win_score = 6
+    draw_score = 3
+    total = 0
+
+    for op, me in rounds:
+        total += score_map[me]
+        if op == me:
+            total += draw_score
+        elif (me, op) in wins:
+            total += win_score
+
+    return total
 
 
 def solve_one(data: str) -> int:
-    OPPONENT_ROCK, OPPONENT_PAPER, OPPONENT_SCISSORS = "ABC"
-    ME_ROCK, ME_PAPER, ME_SCISSORS = "XYZ"
-
-    total = 0
-
-    for line in data.split("\n"):
-        opponent, me = line.strip().split(" ")
-        if me == ME_ROCK:
-            total += POINTS["ROCK"]
-            if opponent == OPPONENT_SCISSORS:
-                total += POINTS["WIN"]
-
-        elif me == ME_PAPER:
-            total += POINTS["PAPER"]
-            if opponent == OPPONENT_ROCK:
-                total += POINTS["WIN"]
-
-        elif me == ME_SCISSORS:
-            total += POINTS["SCISSORS"]
-            if opponent == OPPONENT_PAPER:
-                total += POINTS["WIN"]
-
-        if (
-            (opponent == OPPONENT_ROCK and me == ME_ROCK)
-            or (opponent == OPPONENT_PAPER and me == ME_PAPER)
-            or (opponent == OPPONENT_SCISSORS and me == ME_SCISSORS)
-        ):
-            total += POINTS["DRAW"]
-
-    return total
+    rounds: list[Round] = [
+        tuple(shape_map[s] for s in line.split(" ")) for line in data.split("\n")
+    ]
+    return solve(rounds)
 
 
 def solve_two(data: str) -> int:
-    OPPONENT_ROCK, OPPONENT_PAPER, OPPONENT_SCISSORS = "ABC"
-    LOSS, DRAW, WIN = "XYZ"
-
-    total = 0
+    round_end_map = {"X": "loss", "Y": "draw", "Z": "win"}
+    rounds: list[Round] = []
 
     for line in data.split("\n"):
-        opponent, me = line.strip().split(" ")
-        if opponent == OPPONENT_ROCK:
-            if me == WIN:
-                total += POINTS["PAPER"]
-                total += POINTS["WIN"]
-            elif me == DRAW:
-                total += POINTS["ROCK"]
-                total += POINTS["DRAW"]
-            elif me == LOSS:
-                total += POINTS["SCISSORS"]
+        op, end = line.split(" ")
+        op = shape_map[op]
+        end = round_end_map[end]
 
-        elif opponent == OPPONENT_PAPER:
-            if me == WIN:
-                total += POINTS["SCISSORS"]
-                total += POINTS["WIN"]
-            elif me == DRAW:
-                total += POINTS["PAPER"]
-                total += POINTS["DRAW"]
-            elif me == LOSS:
-                total += POINTS["ROCK"]
+        if end == "draw":
+            me = op
+        elif end == "win":
+            me = next((win[0] for win in wins if win[1] == op))
+        elif end == "loss":
+            me = next((win[1] for win in wins if win[0] == op))
+        else:
+            raise AssertionError("This should never happen")
 
-        elif opponent == OPPONENT_SCISSORS:
-            if me == WIN:
-                total += POINTS["ROCK"]
-                total += POINTS["WIN"]
-            elif me == DRAW:
-                total += POINTS["SCISSORS"]
-                total += POINTS["DRAW"]
-            elif me == LOSS:
-                total += POINTS["PAPER"]
+        rounds.append((op, me))
 
-    return total
+    return solve(rounds)
 
 
 if __name__ == "__main__":

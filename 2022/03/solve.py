@@ -1,16 +1,21 @@
 from pathlib import Path
 from string import ascii_letters
+from typing import Iterable
+
+
+def grouper(iterable: Iterable[str], n: int) -> Iterable[tuple[str, ...]]:
+    args = [iter(iterable)] * n
+    return zip(*args)
 
 
 def solve_one(data: str) -> int:
     total = 0
-    lines = data.split("\n")
 
-    for line in lines:
+    for line in data.split("\n"):
         half = len(line) // 2
-        c1 = set(line[:half])
-        c2 = set(line[half:])
-        item = (c1 & c2).pop()
+        one = line[:half]
+        two = line[half:]
+        item = (set(one) & set(two)).pop()
         total += ascii_letters.index(item) + 1
 
     return total
@@ -18,13 +23,9 @@ def solve_one(data: str) -> int:
 
 def solve_two(data: str) -> int:
     total = 0
-    lines = data.split("\n")
 
-    for i in range(0, len(lines), 3):
-        first = set(lines[i])
-        second = set(lines[i + 1])
-        third = set(lines[i + 2])
-        item = (first & second & third).pop()
+    for one, two, three in grouper(data.split("\n"), 3):
+        item = (set(one) & set(two) & set(three)).pop()
         total += ascii_letters.index(item) + 1
 
     return total

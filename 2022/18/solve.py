@@ -5,42 +5,20 @@ Point = NamedTuple("Point", [("x", int), ("y", int), ("z", int)])
 
 
 def solve_one(data: str) -> int:
-    points: list[Point] = []
-
-    for line in data.split("\n"):
-        x, y, z = map(int, line.split(","))
-        points.append(Point(x, y, z))
-
+    points = [Point(*(int(n) for n in line.split(","))) for line in data.split("\n")]
     total = 0
 
-    for point_a in points:
+    for a in points:
         a_exposed_sides = 6
-
-        for point_b in points:
-            if point_a == point_b:
+        for b in points:
+            if a == b:
                 continue
-
-            if (
-                point_a.x == point_b.x
-                and point_a.y == point_b.y
-                and abs(point_a.z - point_b.z) == 1
-            ):
+            if a.x == b.x and a.y == b.y and abs(a.z - b.z) == 1:
                 a_exposed_sides -= 1
-
-            if (
-                point_a.x == point_b.x
-                and point_a.z == point_b.z
-                and abs(point_a.y - point_b.y) == 1
-            ):
+            if a.x == b.x and a.z == b.z and abs(a.y - b.y) == 1:
                 a_exposed_sides -= 1
-
-            if (
-                point_a.y == point_b.y
-                and point_a.z == point_b.z
-                and abs(point_a.x - point_b.x) == 1
-            ):
+            if a.y == b.y and a.z == b.z and abs(a.x - b.x) == 1:
                 a_exposed_sides -= 1
-
         total += a_exposed_sides
 
     return total

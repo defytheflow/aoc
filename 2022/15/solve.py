@@ -46,7 +46,7 @@ def solve_two(data: str) -> int:
                 ):
                     return x * 4_000_000 + y
 
-    raise AssertionError("This should never happen")
+    assert False, "This should never happen"
 
 
 if __name__ == "__main__":

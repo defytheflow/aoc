@@ -2,11 +2,9 @@ from pathlib import Path
 
 
 def solve_one(data: str) -> int:
-    grid: list[list[int]] = []
-    for line in data.split("\n"):
-        grid.append(list(map(int, line.strip())))
-
+    grid = [[int(c) for c in line] for line in data.split("\n")]
     n_visible_trees = 0
+
     for i, row in enumerate(grid):
 
         if i == 0 or i == len(grid) - 1:
@@ -58,11 +56,9 @@ def solve_one(data: str) -> int:
 
 
 def solve_two(data: str) -> int:
-    grid: list[list[int]] = []
-    for line in data.split("\n"):
-        grid.append(list(map(int, line.strip())))
-
+    grid = [[int(c) for c in line] for line in data.split("\n")]
     max_scenic_score = 1
+
     for i, row in enumerate(grid):
         if i == 0 or i == len(grid) - 1:
             continue

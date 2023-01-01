@@ -1,28 +1,33 @@
+from functools import partial
 from pathlib import Path
+from typing import Callable
+
+Pair = tuple[int, int]
 
 
-def solve_one(data: str) -> int:
+def contains(s1: Pair, s2: Pair) -> bool:
+    (a1, b1), (a2, b2) = s1, s2
+    return (a2 <= a1 and b1 <= b2) or (a1 <= a2 and b2 <= b1)
+
+
+def overlap(s1: Pair, s2: Pair) -> bool:
+    (a1, b1), (a2, b2) = s1, s2
+    return (a2 <= a1 <= b2) or (a2 <= b1 <= b2) or (a1 <= a2 <= b1) or (a1 <= b2 <= b1)
+
+
+def solve(data: str, condition: Callable[[Pair, Pair], bool]) -> int:
     total = 0
 
     for line in data.split("\n"):
-        s1, s2 = [[int(n) for n in s.split("-")] for s in line.strip().split(",")]
-        (a1, b1), (a2, b2) = s1, s2
-        if (a2 <= a1 and b1 <= b2) or (a1 <= a2 and b2 <= b1):
+        s1, s2 = [tuple(int(n) for n in s.split("-")) for s in line.split(",")]
+        if condition(s1, s2):
             total += 1
 
     return total
 
 
-def solve_two(data: str) -> int:
-    total = 0
-
-    for line in data.split("\n"):
-        s1, s2 = [[int(n) for n in s.split("-")] for s in line.strip().split(",")]
-        (a1, b1), (a2, b2) = s1, s2
-        if (a2 <= a1 <= b2) or (a2 <= b1 <= b2) or (a1 <= a2 <= b1) or (a1 <= b2 <= b1):
-            total += 1
-
-    return total
+solve_one = partial(solve, condition=contains)
+solve_two = partial(solve, condition=overlap)
 
 
 if __name__ == "__main__":

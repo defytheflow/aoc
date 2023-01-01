@@ -48,14 +48,15 @@ def solve_two(data: str) -> int:
         op = shape_map[op]
         end = round_end_map[end]
 
-        if end == "draw":
-            me = op
-        elif end == "win":
-            me = next((win[0] for win in wins if win[1] == op))
-        elif end == "loss":
-            me = next((win[1] for win in wins if win[0] == op))
-        else:
-            raise AssertionError("This should never happen")
+        match end:
+            case "draw":
+                me = op
+            case "win":
+                me = next((win[0] for win in wins if win[1] == op))
+            case "loss":
+                me = next((win[1] for win in wins if win[0] == op))
+            case _:
+                assert False, "This should never happen"
 
         rounds.append((op, me))
 

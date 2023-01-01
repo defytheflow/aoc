@@ -1,3 +1,4 @@
+from functools import partial
 from pathlib import Path
 
 
@@ -5,15 +6,11 @@ def solve(data: str, count: int) -> int:
     for i in range(count, len(data)):
         if len(set(data[i - count : i])) == count:
             return i
-    raise AssertionError("This should never happen")
+    assert False, "This should never happen"
 
 
-def solve_one(data: str) -> int:
-    return solve(data, 4)
-
-
-def solve_two(data: str) -> int:
-    return solve(data, 14)
+solve_one = partial(solve, count=4)
+solve_two = partial(solve, count=14)
 
 
 if __name__ == "__main__":

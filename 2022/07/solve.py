@@ -11,9 +11,8 @@ class Dir:
     dirs: dict[str, Dir] = field(default_factory=dict)
 
 
-def build_fs(data: str) -> Dir:
-    fs = Dir(parent=None)
-    current = fs
+def parse_fs(data: str) -> Dir:
+    current = fs = Dir(parent=None)
 
     for line in data.split("\n"):
         first, *rest = line.split(" ")
@@ -22,60 +21,46 @@ def build_fs(data: str) -> Dir:
             if cmd == "cd":
                 dirname = rest[1]
                 if dirname == "..":
-                    assert current.parent is not None, "current.parent is None"
+                    assert current.parent is not None
                     current = current.parent
                 elif dirname == "/":
                     current = fs
                 else:
-                    assert current is not None, "current is None"
+                    assert current is not None
                     current = current.dirs.setdefault(dirname, Dir(parent=current))
         elif first != "dir":
+            assert current is not None
             fname = rest[0]
-            assert current is not None, "current is None"
             current.files.setdefault(fname, int(first))
 
     return fs
 
 
+dir_sizes: list[int] = []
+
+
+def compute_size(directory: Dir) -> int:
+    size = sum(directory.files.values())
+
+    for dir_ in directory.dirs.values():
+        dir_size = compute_size(dir_)
+        dir_sizes.append(dir_size)
+        size += dir_size
+
+    return size
+
+
 def solve_one(data: str) -> int:
-    fs = build_fs(data)
-    dir_sizes: list[int] = []
-
-    def compute_size(directory: Dir) -> int:
-        size = sum(directory.files.values())
-
-        for dir_ in directory.dirs.values():
-            dir_size = compute_size(dir_)
-            dir_sizes.append(dir_size)
-            size += dir_size
-
-        return size
-
+    fs = parse_fs(data)
     compute_size(fs)
-    total = sum([size for size in dir_sizes if size <= 100_000])
-
-    return total
+    return sum(size for size in dir_sizes if size <= 100_000)
 
 
 def solve_two(data: str) -> int:
-    fs = build_fs(data)
-    dir_sizes: list[int] = []
-
-    def compute_size(directory: Dir) -> int:
-        size = sum(directory.files.values())
-
-        for dir_ in directory.dirs.values():
-            dir_size = compute_size(dir_)
-            dir_sizes.append(dir_size)
-            size += dir_size
-
-        return size
-
+    fs = parse_fs(data)
     root_size = compute_size(fs)
     needed_size = 30_000_000 - (70_000_000 - root_size)
-    dir_size = min([size for size in dir_sizes if size >= needed_size])
-
-    return dir_size
+    return min(size for size in dir_sizes if size >= needed_size)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@ def solve(data: str, count: int) -> int:
     for i in range(count, len(data)):
         if len(set(data[i - count : i])) == count:
             return i
-    assert False, "This should never happen"
+    assert False
 
 
 solve_one = partial(solve, count=4)

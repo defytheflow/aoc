@@ -56,7 +56,7 @@ def solve_two(data: str) -> int:
             case "loss":
                 me = next((win[1] for win in wins if win[0] == op))
             case _:
-                assert False, "This should never happen"
+                assert False
 
         rounds.append((op, me))
 

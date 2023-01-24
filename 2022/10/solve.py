@@ -36,7 +36,7 @@ def solve_one(data: str) -> int:
         except CustomStopError:
             return total
 
-    assert False, "This should never happen"
+    assert False
 
 
 def solve_two(data: str) -> None:

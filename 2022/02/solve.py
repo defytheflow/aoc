@@ -1,6 +1,19 @@
 from pathlib import Path
 from typing import Literal
 
+
+def main() -> None:
+    data = (Path(__file__).parent / "input.txt").read_text().strip()
+
+    result_one = solve_one(data)
+    print(result_one)
+    assert result_one == 15_523
+
+    result_two = solve_two(data)
+    print(result_two)
+    assert result_two == 15_702
+
+
 Shape = Literal["R", "P", "S"]
 Round = tuple[Shape, Shape]
 
@@ -14,22 +27,6 @@ shape_map: dict[str, Shape] = {
 }
 
 wins: list[Round] = [("R", "S"), ("S", "P"), ("P", "R")]
-
-
-def solve(rounds: list[Round]) -> int:
-    score_map: dict[Shape, int] = {"R": 1, "P": 2, "S": 3}
-    win_score = 6
-    draw_score = 3
-    total = 0
-
-    for op, me in rounds:
-        total += score_map[me]
-        if op == me:
-            total += draw_score
-        elif (me, op) in wins:
-            total += win_score
-
-    return total
 
 
 def solve_one(data: str) -> int:
@@ -63,13 +60,21 @@ def solve_two(data: str) -> int:
     return solve(rounds)
 
 
+def solve(rounds: list[Round]) -> int:
+    score_map: dict[Shape, int] = {"R": 1, "P": 2, "S": 3}
+    win_score = 6
+    draw_score = 3
+    total = 0
+
+    for op, me in rounds:
+        total += score_map[me]
+        if op == me:
+            total += draw_score
+        elif (me, op) in wins:
+            total += win_score
+
+    return total
+
+
 if __name__ == "__main__":
-    data = (Path(__file__).parent / "input.txt").read_text().strip()
-
-    solution_one = solve_one(data)
-    print(solution_one)
-    assert solution_one == 15_523
-
-    solution_two = solve_two(data)
-    print(solution_two)
-    assert solution_two == 15_702
+    main()

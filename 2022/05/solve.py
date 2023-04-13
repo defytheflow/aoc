@@ -2,6 +2,18 @@ from functools import partial
 from pathlib import Path
 
 
+def main() -> None:
+    data = (Path(__file__).parent / "input.txt").read_text().strip()
+
+    result_one = solve_one(data)
+    print(result_one)
+    assert result_one == "RNZLFZSJH"
+
+    result_two = solve_two(data)
+    print(result_two)
+    assert result_two == "CNSFCGJSM"
+
+
 def solve(data: str, reverse: bool) -> str:
     first, second = data.split("\n\n")
 
@@ -30,12 +42,4 @@ solve_two = partial(solve, reverse=False)
 
 
 if __name__ == "__main__":
-    data = (Path(__file__).parent / "input.txt").read_text().strip()
-
-    solution_one = solve_one(data)
-    print(solution_one)
-    assert solution_one == "RNZLFZSJH"
-
-    solution_two = solve_two(data)
-    print(solution_two)
-    assert solution_two == "CNSFCGJSM"
+    main()

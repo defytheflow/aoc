@@ -7,6 +7,36 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 
+def main() -> None:
+    data = (Path(__file__).parent / "input.txt").read_text().strip()
+
+    result_one = solve_one(data)
+    print(result_one)
+    assert result_one == 1940
+
+    # result_two = solve_two(data)
+    # print(result_two)
+    # assert result_two == ...
+
+
+def solve_one(data: str) -> int:
+    graph: dict[str, Valve] = {}
+
+    for line in data.split("\n"):
+        first, second = [s.split(" ") for s in line.split(";")]
+        label = first[1]
+        rate = int(first[-1].split("=")[-1])
+        links = [label[:-1] if label[-1] == "," else label for label in second[5:]]
+        graph[label] = Valve(label, rate, links)
+
+    new_graph = compress_graph(graph)
+    return dfs(new_graph, current=new_graph["AA"], minutes_left=30, opened_valves=[])
+
+
+def solve_two(data: str) -> ...:
+    ...
+
+
 @dataclass
 class Valve:
     label: str
@@ -75,31 +105,5 @@ def compress_graph(graph: Graph) -> Graph:
     }
 
 
-def solve_one(data: str) -> int:
-    graph: dict[str, Valve] = {}
-
-    for line in data.split("\n"):
-        first, second = [s.split(" ") for s in line.split(";")]
-        label = first[1]
-        rate = int(first[-1].split("=")[-1])
-        links = [label[:-1] if label[-1] == "," else label for label in second[5:]]
-        graph[label] = Valve(label, rate, links)
-
-    new_graph = compress_graph(graph)
-    return dfs(new_graph, current=new_graph["AA"], minutes_left=30, opened_valves=[])
-
-
-def solve_two(data: str) -> ...:
-    ...
-
-
 if __name__ == "__main__":
-    data = (Path(__file__).parent / "input.txt").read_text().strip()
-
-    solution_one = solve_one(data)
-    print(solution_one)
-    assert solution_one == 1940
-
-    # solution_two = solve_two(data)
-    # print(solution_two)
-    # assert solution_two == ...
+    main()

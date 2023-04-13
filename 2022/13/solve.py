@@ -2,32 +2,17 @@ from functools import cmp_to_key
 from pathlib import Path
 from typing import Literal
 
-PacketData = int | list["PacketData"]
 
+def main() -> None:
+    data = (Path(__file__).parent / "input.txt").read_text().strip()
 
-def compare(left: PacketData, right: PacketData) -> Literal[-1, 1, 0]:
-    if isinstance(left, int) and isinstance(right, int):
-        if left < right:
-            return -1
-        elif left > right:
-            return 1
-        else:
-            return 0
-    elif isinstance(left, list) and isinstance(right, list):
-        for i in range(max(len(left), len(right))):
-            if i > len(left) - 1:
-                return -1
-            elif i > len(right) - 1:
-                return 1
-            result = compare(left[i], right[i])
-            if result != 0:
-                return result
-        return 0
-    else:
-        return compare(
-            [left] if isinstance(left, int) else left,
-            [right] if isinstance(right, int) else right,
-        )
+    result_one = solve_one(data)
+    print(result_one)
+    assert result_one == 5252
+
+    result_two = solve_two(data)
+    print(result_two)
+    assert result_two == 20_592
 
 
 def solve_one(data: str) -> int:
@@ -56,13 +41,33 @@ def solve_two(data: str) -> int:
     return (packets.index(packet_a) + 1) * (packets.index(packet_b) + 1)
 
 
+PacketData = int | list["PacketData"]
+
+
+def compare(left: PacketData, right: PacketData) -> Literal[-1, 1, 0]:
+    if isinstance(left, int) and isinstance(right, int):
+        if left < right:
+            return -1
+        elif left > right:
+            return 1
+        else:
+            return 0
+    elif isinstance(left, list) and isinstance(right, list):
+        for i in range(max(len(left), len(right))):
+            if i > len(left) - 1:
+                return -1
+            elif i > len(right) - 1:
+                return 1
+            result = compare(left[i], right[i])
+            if result != 0:
+                return result
+        return 0
+    else:
+        return compare(
+            [left] if isinstance(left, int) else left,
+            [right] if isinstance(right, int) else right,
+        )
+
+
 if __name__ == "__main__":
-    data = (Path(__file__).parent / "input.txt").read_text().strip()
-
-    solution_one = solve_one(data)
-    print(solution_one)
-    assert solution_one == 5252
-
-    solution_two = solve_two(data)
-    print(solution_two)
-    assert solution_two == 20_592
+    main()

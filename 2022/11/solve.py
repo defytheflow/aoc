@@ -1,8 +1,52 @@
+from __future__ import annotations
+
 import math
 from dataclasses import dataclass
 from functools import partial
 from pathlib import Path
 from typing import Callable, Literal
+
+
+def main() -> None:
+    data = (Path(__file__).parent / "input.txt").read_text().strip()
+
+    result_one = solve_one(data)
+    print(result_one)
+    assert result_one == 108_240
+
+    result_two = solve_two(data)
+    print(result_two)
+    assert result_two == 25_712_998_901
+
+
+def solve_one(data: str) -> int:
+    monkeys = parse_input(data)
+    return solve(monkeys, 20, lambda worry: math.floor(worry / 3))
+
+
+def solve_two(data: str) -> int:
+    monkeys = parse_input(data)
+    global_divisor = math.prod(monkey.divisor for monkey in monkeys)
+    return solve(monkeys, 10_000, lambda worry: worry % global_divisor)
+
+
+def solve(
+    monkeys: list[Monkey],
+    rounds: int,
+    reduce_worry: Callable[[int], int],
+) -> int:
+    counts = [0] * len(monkeys)
+
+    for _ in range(rounds):
+        for i, monkey in enumerate(monkeys):
+            while len(monkey.items) > 0:
+                item = monkey.items.pop(0)
+                new_item = reduce_worry(monkey.operation(item))
+                next_monkey = monkey.test(new_item)
+                monkeys[next_monkey].items.append(new_item)
+                counts[i] += 1
+
+    return math.prod(sorted(counts)[-2:])
 
 
 @dataclass
@@ -13,7 +57,7 @@ class Monkey:
     divisor: int
 
 
-def parse_monkeys(data: str) -> list[Monkey]:
+def parse_input(data: str) -> list[Monkey]:
     monkeys: list[Monkey] = []
 
     def operation(
@@ -49,43 +93,5 @@ def parse_monkeys(data: str) -> list[Monkey]:
     return monkeys
 
 
-def solve(
-    monkeys: list[Monkey],
-    rounds: int,
-    reduce_worry: Callable[[int], int],
-) -> int:
-    counts = [0] * len(monkeys)
-
-    for _ in range(rounds):
-        for i, monkey in enumerate(monkeys):
-            while len(monkey.items) > 0:
-                item = monkey.items.pop(0)
-                new_item = reduce_worry(monkey.operation(item))
-                next_monkey = monkey.test(new_item)
-                monkeys[next_monkey].items.append(new_item)
-                counts[i] += 1
-
-    return math.prod(sorted(counts)[-2:])
-
-
-def solve_one(data: str) -> int:
-    monkeys = parse_monkeys(data)
-    return solve(monkeys, 20, lambda worry: math.floor(worry / 3))
-
-
-def solve_two(data: str) -> int:
-    monkeys = parse_monkeys(data)
-    global_divisor = math.prod(monkey.divisor for monkey in monkeys)
-    return solve(monkeys, 10_000, lambda worry: worry % global_divisor)
-
-
 if __name__ == "__main__":
-    data = (Path(__file__).parent / "input.txt").read_text().strip()
-
-    solution_one = solve_one(data)
-    print(solution_one)
-    assert solution_one == 108_240
-
-    solution_two = solve_two(data)
-    print(solution_two)
-    assert solution_two == 25_712_998_901
+    main()

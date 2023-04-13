@@ -1,6 +1,18 @@
 from pathlib import Path
 
 
+def main() -> None:
+    data = (Path(__file__).parent / "input.txt").read_text().strip()
+
+    result_one = solve_one(data)
+    print(result_one)
+    assert result_one == 4_907_780
+
+    result_two = solve_two(data)
+    print(result_two)
+    assert result_two == 13_639_962_836_448
+
+
 def solve_one(data: str) -> int:
     y = 2_000_000
     xs: set[int] = set()
@@ -50,12 +62,4 @@ def solve_two(data: str) -> int:
 
 
 if __name__ == "__main__":
-    data = (Path(__file__).parent / "input.txt").read_text().strip()
-
-    solution_one = solve_one(data)
-    print(solution_one)
-    assert solution_one == 4_907_780
-
-    solution_two = solve_two(data)
-    print(solution_two)
-    assert solution_two == 13_639_962_836_448
+    main()

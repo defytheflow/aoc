@@ -3,10 +3,12 @@ import Foundation
 let data = try String(contentsOfFile: "input.txt")
 
 let result_one = solve_one(data: data)
-print(result_one!, result_one! == 72770)
+print(result_one!)
+assert(result_one == 72_770)
 
 let result_two = solve_two(data: data)
-print(result_two!, result_two == 13912)
+print(result_two!)
+assert(result_two == 13_912)
 
 func solve_one(data: String) -> Int? {
     var (numbers, boards) = parse_input(data: data)

@@ -54,6 +54,6 @@ func solve_two(data: String) -> Int {
 func parse_input(data: String) -> [(Substring, Int)] {
     data
         .split(separator: "\n")
-        .map({ $0.split(separator: " ") })
-        .map({ ($0[0], Int($0[1])!) })
+        .map { $0.split(separator: " ") }
+        .map { ($0[0], Int($0[1])!) }
 }

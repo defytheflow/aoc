@@ -92,7 +92,7 @@ struct Board {
     }
 
     func hasWon() -> Bool {
-        let hasWinningRow = cells.contains { $0.allSatisfy({ $0.isMarked }) }
+        let hasWinningRow = cells.contains { $0.allSatisfy { $0.isMarked } }
         if hasWinningRow {
             return true
         }
@@ -134,10 +134,10 @@ func parse_input(data: String) -> ([Int], [Board]) {
     let array = data.split(separator: "\n\n")
     let numbers = array[0].split(separator: ",").map { Int($0)! }
     let boards = array[1..<array.count]
-        .map({
+        .map {
             Board(data: $0
               .split(separator: "\n")
-              .flatMap({ $0.split(separator: " ").map({ Int($0)! }) }))
-        })
+              .flatMap { $0.split(separator: " ").map { Int($0)! } })
+        }
     return (numbers, boards)
 }

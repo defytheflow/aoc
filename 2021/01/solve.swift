@@ -19,7 +19,7 @@ func solve_two(data: String) -> Int {
 }
 
 func solve(data: String, count: Int) -> Int {
-    let measurements = data.split(separator: "\n").map { Int($0)! }
+    let measurements = parse_input(data: data)
     var increases = 0
 
     for i in count..<measurements.count {
@@ -29,4 +29,10 @@ func solve(data: String, count: Int) -> Int {
     }
 
     return increases
+}
+
+func parse_input(data: String) -> [Int] {
+    data
+        .split(separator: "\n")
+        .map { Int($0)! }
 }

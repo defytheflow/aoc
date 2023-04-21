@@ -2,16 +2,16 @@ import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
 
-let result_one = solve_one(data: data)
-print(result_one)
-assert(result_one == 3429254)
+let resultOne = solveOne(data: data)
+print(resultOne)
+assert(resultOne == 3429254)
 
-let result_two = solve_two(data: data)
-print(result_two)
-assert(result_two == 5410338)
+let resultTwo = solveTwo(data: data)
+print(resultTwo)
+assert(resultTwo == 5410338)
 
-func solve_one(data: String) -> Int {
-    let numbers = parse_input(data: data)
+func solveOne(data: String) -> Int {
+    let numbers = parseInput(data: data)
     var gammaRate = "", epsilonRate = ""
 
     for columnIndex in numbers[0].indices {
@@ -34,8 +34,8 @@ func solve_one(data: String) -> Int {
     return Int(gammaRate, radix: 2)! * Int(epsilonRate, radix: 2)!
 }
 
-func solve_two(data: String) -> Int {
-    let numbers = parse_input(data: data)
+func solveTwo(data: String) -> Int {
+    let numbers = parseInput(data: data)
     let oxygenGeneratorRating = determine(numbers: numbers, criteria: .mostCommon)
     let co2ScrubberRating = determine(numbers: numbers, criteria: .leastCommon)
     return oxygenGeneratorRating * co2ScrubberRating
@@ -75,7 +75,7 @@ func determine(numbers: [String], criteria: BitCriteria) -> Int {
     return Int(rating, radix: 2)!
 }
 
-func parse_input(data: String) -> [String] {
+func parseInput(data: String) -> [String] {
     data
         .split(separator: "\n")
         .map { String($0) }

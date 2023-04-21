@@ -2,16 +2,16 @@ import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
 
-let result_one = solve_one(data: data)
-print(result_one)
-assert(result_one == 1_868_935)
+let resultOne = solveOne(data: data)
+print(resultOne)
+assert(resultOne == 1_868_935)
 
-let result_two = solve_two(data: data)
-print(result_two)
-assert(result_two == 1_965_970_888)
+let resultTwo = solveTwo(data: data)
+print(resultTwo)
+assert(resultTwo == 1_965_970_888)
 
-func solve_one(data: String) -> Int {
-    let commands = parse_input(data: data)
+func solveOne(data: String) -> Int {
+    let commands = parseInput(data: data)
     var depth = 0, position = 0
 
     for (command, count) in commands {
@@ -30,8 +30,8 @@ func solve_one(data: String) -> Int {
     return depth * position
 }
 
-func solve_two(data: String) -> Int {
-    let commands = parse_input(data: data)
+func solveTwo(data: String) -> Int {
+    let commands = parseInput(data: data)
     var depth = 0, position = 0, aim = 0
 
     for (command, count) in commands {
@@ -51,7 +51,7 @@ func solve_two(data: String) -> Int {
     return depth * position
 }
 
-func parse_input(data: String) -> [(Substring, Int)] {
+func parseInput(data: String) -> [(Substring, Int)] {
     data
         .split(separator: "\n")
         .map { $0.split(separator: " ") }

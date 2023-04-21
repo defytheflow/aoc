@@ -2,23 +2,23 @@ import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
 
-let result_one = solve_one(data: data)
-print(result_one)
-assert(result_one == 372_300)
+let resultOne = solveOne(data: data)
+print(resultOne)
+assert(resultOne == 372_300)
 
-/* let result_two = solve_two(data: data) */
-/* print(result_two) */
+/* let resultTwo = solveTwo(data: data) */
+/* print(resultTwo) */
 
-func solve_one(data: String) -> Int {
+func solveOne(data: String) -> Int {
     solve(data: data, numberOfDays: 80)
 }
 
-func solve_two(data: String) -> Int {
+func solveTwo(data: String) -> Int {
     solve(data: data, numberOfDays: 256)
 }
 
 func solve(data: String, numberOfDays: Int) -> Int {
-    var timers = parse_input(data: data)
+    var timers = parseInput(data: data)
     let resetTimer = 6
     let newTimer = 8
 
@@ -36,7 +36,7 @@ func solve(data: String, numberOfDays: Int) -> Int {
     return timers.count
 }
 
-func parse_input(data: String) -> [Int] {
+func parseInput(data: String) -> [Int] {
     data
         .trimmingCharacters(in: .newlines)
         .split(separator: ",")

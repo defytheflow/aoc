@@ -2,16 +2,16 @@ import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
 
-let result_one = solve_one(data: data)
-print(result_one!)
-assert(result_one == 72_770)
+let resultOne = solveOne(data: data)
+print(resultOne!)
+assert(resultOne == 72_770)
 
-let result_two = solve_two(data: data)
-print(result_two!)
-assert(result_two == 13_912)
+let resultTwo = solveTwo(data: data)
+print(resultTwo!)
+assert(resultTwo == 13_912)
 
-func solve_one(data: String) -> Int? {
-    var (numbers, boards) = parse_input(data: data)
+func solveOne(data: String) -> Int? {
+    var (numbers, boards) = parseInput(data: data)
 
     for number in numbers {
         for i in boards.indices {
@@ -25,8 +25,8 @@ func solve_one(data: String) -> Int? {
     return nil
 }
 
-func solve_two(data: String) -> Int? {
-    var (numbers, boards) = parse_input(data: data)
+func solveTwo(data: String) -> Int? {
+    var (numbers, boards) = parseInput(data: data)
     var winningBoardsIndices = Set<Int>()
 
     for number in numbers {
@@ -130,7 +130,7 @@ struct Board {
     }
 }
 
-func parse_input(data: String) -> ([Int], [Board]) {
+func parseInput(data: String) -> ([Int], [Board]) {
     let array = data.split(separator: "\n\n")
     let numbers = array[0].split(separator: ",").map { Int($0)! }
     let boards = array[1..<array.count]

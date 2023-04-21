@@ -2,21 +2,21 @@ import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
 
-let result_one = solve_one(data: data)
-print(result_one)
-assert(result_one == 8111)
+let resultOne = solveOne(data: data)
+print(resultOne)
+assert(resultOne == 8111)
 
-let result_two = solve_two(data: data)
-print(result_two)
-assert(result_two == 22088)
+let resultTwo = solveTwo(data: data)
+print(resultTwo)
+assert(resultTwo == 22088)
 
-func solve_one(data: String) -> Int {
-    solve(lines: parse_input(data: data)
+func solveOne(data: String) -> Int {
+    solve(lines: parseInput(data: data)
                     .filter { $0.start.x == $0.end.x || $0.start.y == $0.end.y })
 }
 
-func solve_two(data: String) -> Int {
-    solve(lines: parse_input(data: data))
+func solveTwo(data: String) -> Int {
+    solve(lines: parseInput(data: data))
 }
 
 func solve(lines: [Line]) -> Int {
@@ -66,7 +66,7 @@ struct Point: Hashable {
     let x, y: Int
 }
 
-func parse_input(data: String) -> [Line] {
+func parseInput(data: String) -> [Line] {
     data
         .split(separator: "\n")
         .map { line in

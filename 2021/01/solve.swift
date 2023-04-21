@@ -2,24 +2,24 @@ import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
 
-let result_one = solve_one(data: data)
-print(result_one)
-assert(result_one == 1288)
+let resultOne = solveOne(data: data)
+print(resultOne)
+assert(resultOne == 1288)
 
-let result_two = solve_two(data: data)
-print(result_two)
-assert(result_two == 1311)
+let resultTwo = solveTwo(data: data)
+print(resultTwo)
+assert(resultTwo == 1311)
 
-func solve_one(data: String) -> Int {
+func solveOne(data: String) -> Int {
     solve(data: data, count: 1)
 }
 
-func solve_two(data: String) -> Int {
+func solveTwo(data: String) -> Int {
     solve(data: data, count: 3)
 }
 
 func solve(data: String, count: Int) -> Int {
-    let measurements = parse_input(data: data)
+    let measurements = parseInput(data: data)
     var increases = 0
 
     for i in count..<measurements.count {
@@ -31,7 +31,7 @@ func solve(data: String, count: Int) -> Int {
     return increases
 }
 
-func parse_input(data: String) -> [Int] {
+func parseInput(data: String) -> [Int] {
     data
         .split(separator: "\n")
         .map { Int($0)! }

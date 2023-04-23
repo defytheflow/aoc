@@ -3,14 +3,14 @@ import Foundation
 let data = try String(contentsOfFile: "input.txt")
 
 let resultOne = solveOne(data: data)
-print(resultOne!)
+print(resultOne)
 assert(resultOne == 72_770)
 
 let resultTwo = solveTwo(data: data)
-print(resultTwo!)
+print(resultTwo)
 assert(resultTwo == 13_912)
 
-func solveOne(data: String) -> Int? {
+func solveOne(data: String) -> Int {
     var (numbers, boards) = parseInput(data: data)
 
     for number in numbers {
@@ -22,10 +22,10 @@ func solveOne(data: String) -> Int? {
         }
     }
 
-    return nil
+    fatalError("Control flow should never reach here")
 }
 
-func solveTwo(data: String) -> Int? {
+func solveTwo(data: String) -> Int {
     var (numbers, boards) = parseInput(data: data)
     var winningBoardsIndices = Set<Int>()
 
@@ -44,7 +44,7 @@ func solveTwo(data: String) -> Int? {
         }
     }
 
-    return nil
+    fatalError("Control flow should never reach here")
 }
 
 struct Board {

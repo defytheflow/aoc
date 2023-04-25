@@ -1,21 +1,21 @@
 import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
+let input = parseInput(data: data)
 
-let resultOne = solveOne(data: data)
+let resultOne = solveOne(input: input)
 print(resultOne)
-assert(resultOne == 3429254)
+assert(resultOne == 3_429_254)
 
-let resultTwo = solveTwo(data: data)
+let resultTwo = solveTwo(input: input)
 print(resultTwo)
-assert(resultTwo == 5410338)
+assert(resultTwo == 5_410_338)
 
-func solveOne(data: String) -> Int {
-    let numbers = parseInput(data: data)
+func solveOne(input numbers: [String]) -> Int {
     var gammaRate = "", epsilonRate = ""
 
     for columnIndex in numbers[0].indices {
-        var counts: Dictionary<Character, Int> = ["0": 0, "1": 0]
+        var counts: [Character: Int] = ["0": 0, "1": 0]
 
         for rowIndex in numbers.indices {
             let digit = numbers[rowIndex][columnIndex]
@@ -34,8 +34,7 @@ func solveOne(data: String) -> Int {
     return Int(gammaRate, radix: 2)! * Int(epsilonRate, radix: 2)!
 }
 
-func solveTwo(data: String) -> Int {
-    let numbers = parseInput(data: data)
+func solveTwo(input numbers: [String]) -> Int {
     let oxygenGeneratorRating = determine(numbers: numbers, criteria: .mostCommon)
     let co2ScrubberRating = determine(numbers: numbers, criteria: .leastCommon)
     return oxygenGeneratorRating * co2ScrubberRating
@@ -50,7 +49,7 @@ func determine(numbers: [String], criteria: BitCriteria) -> Int {
     var rating = ""
 
     for columnIndex in numbers[0].indices {
-        var counts: Dictionary<Character, Int> = ["0": 0, "1": 0]
+        var counts: [Character: Int] = ["0": 0, "1": 0]
 
         for rowIndex in numbers.indices {
             let digit = numbers[rowIndex][columnIndex]

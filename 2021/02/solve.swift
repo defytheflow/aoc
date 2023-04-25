@@ -1,17 +1,17 @@
 import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
+let input = parseInput(data: data)
 
-let resultOne = solveOne(data: data)
+let resultOne = solveOne(input: input)
 print(resultOne)
 assert(resultOne == 1_868_935)
 
-let resultTwo = solveTwo(data: data)
+let resultTwo = solveTwo(input: input)
 print(resultTwo)
 assert(resultTwo == 1_965_970_888)
 
-func solveOne(data: String) -> Int {
-    let commands = parseInput(data: data)
+func solveOne(input commands: [(Substring, Int)]) -> Int {
     var depth = 0, position = 0
 
     for (command, count) in commands {
@@ -23,15 +23,14 @@ func solveOne(data: String) -> Int {
         case "up":
             depth -= count
         default:
-            break
+            fatalError("Unknown command")
         }
     }
 
     return depth * position
 }
 
-func solveTwo(data: String) -> Int {
-    let commands = parseInput(data: data)
+func solveTwo(input commands: [(Substring, Int)]) -> Int {
     var depth = 0, position = 0, aim = 0
 
     for (command, count) in commands {
@@ -44,7 +43,7 @@ func solveTwo(data: String) -> Int {
         case "up":
             aim -= count
         default:
-            break
+            fatalError("Unknown command")
         }
     }
 

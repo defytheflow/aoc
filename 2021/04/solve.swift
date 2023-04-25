@@ -58,7 +58,7 @@ struct Board {
     init(data: [Int]) {
         cells = []
 
-        var row: [Cell] = []
+        var row = [Cell]()
         for (i, number) in data.enumerated() {
             if i % 5 == 0 {
                 if !row.isEmpty {

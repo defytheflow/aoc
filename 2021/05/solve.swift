@@ -1,26 +1,26 @@
 import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
+let input = parseInput(data: data)
 
-let resultOne = solveOne(data: data)
+let resultOne = solveOne(input: input)
 print(resultOne)
-assert(resultOne == 8111)
+assert(resultOne == 8_111)
 
-let resultTwo = solveTwo(data: data)
+let resultTwo = solveTwo(input: input)
 print(resultTwo)
-assert(resultTwo == 22088)
+assert(resultTwo == 22_088)
 
-func solveOne(data: String) -> Int {
-    solve(lines: parseInput(data: data)
-                    .filter { $0.start.x == $0.end.x || $0.start.y == $0.end.y })
+func solveOne(input: [Line]) -> Int {
+    solve(lines: input.filter { $0.start.x == $0.end.x || $0.start.y == $0.end.y })
 }
 
-func solveTwo(data: String) -> Int {
-    solve(lines: parseInput(data: data))
+func solveTwo(input: [Line]) -> Int {
+    solve(lines: input)
 }
 
 func solve(lines: [Line]) -> Int {
-    var points: [Point: Int] = [:]
+    var points = [Point: Int]()
 
     for line in lines {
         for point in line.points() {
@@ -35,7 +35,7 @@ struct Line {
     let start, end: Point
 
     func points() -> [Point] {
-        var points: [Point] = []
+        var points = [Point]()
 
         if self.start.x == self.end.x {
             let yStep = self.start.y < self.end.y ? 1 : -1

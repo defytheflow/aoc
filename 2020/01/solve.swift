@@ -1,17 +1,17 @@
 import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
+let input = parseInput(data: data)
 
-let resultOne = solveOne(data: data)
+let resultOne = solveOne(input: input)
 print(resultOne)
 assert(resultOne == 1_018_944)
 
-let resultTwo = solveTwo(data: data)
+let resultTwo = solveTwo(input: input)
 print(resultTwo)
 assert(resultTwo == 8_446_464)
 
-func solveOne(data: String) -> Int {
-    let numbers = parseInput(data: data)
+func solveOne(input numbers: [Int]) -> Int {
     let sum = 2020
     var seen = Set<Int>()
 
@@ -26,8 +26,7 @@ func solveOne(data: String) -> Int {
     fatalError("Control flow should never reach here")
 }
 
-func solveTwo(data: String) -> Int {
-    let numbers = parseInput(data: data)
+func solveTwo(input numbers: [Int]) -> Int {
     let sum = 2020
 
     for i in 0..<numbers.count {

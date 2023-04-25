@@ -1,34 +1,28 @@
 import Foundation
 
 let data = try String(contentsOfFile: "input.txt")
+let input = parseInput(data: data)
 
-let resultOne = solveOne(data: data)
+let resultOne = solveOne(input: input)
 print(resultOne)
-assert(resultOne == 1288)
+assert(resultOne == 1_288)
 
-let resultTwo = solveTwo(data: data)
+let resultTwo = solveTwo(input: input)
 print(resultTwo)
-assert(resultTwo == 1311)
+assert(resultTwo == 1_311)
 
-func solveOne(data: String) -> Int {
-    solve(data: data, count: 1)
+func solveOne(input: [Int]) -> Int {
+    solve(input: input, count: 1)
 }
 
-func solveTwo(data: String) -> Int {
-    solve(data: data, count: 3)
+func solveTwo(input: [Int]) -> Int {
+    solve(input: input, count: 3)
 }
 
-func solve(data: String, count: Int) -> Int {
-    let measurements = parseInput(data: data)
-    var increases = 0
-
-    for i in count..<measurements.count {
-        if measurements[i] > measurements[i - count] {
-            increases += 1
-        }
-    }
-
-    return increases
+func solve(input measurements: [Int], count: Int) -> Int {
+    zip(measurements, measurements.dropFirst(count))
+        .map { ($0.0 < $0.1) ? 1 : 0 }
+        .reduce(0, +)
 }
 
 func parseInput(data: String) -> [Int] {

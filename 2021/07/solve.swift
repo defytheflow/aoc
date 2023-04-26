@@ -39,6 +39,6 @@ func solve(input positions: [Int], cost: (_ posA: Int, _ posB: Int) -> Int) -> I
 func parseInput(data: String) -> [Int] {
     data
         .trimmingCharacters(in: .newlines)
-        .split(separator: ",")
-        .map { Int($0)! }
+        .components(separatedBy: ",")
+        .compactMap(Int.init)
 }

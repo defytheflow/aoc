@@ -44,6 +44,7 @@ func solveTwo(input numbers: [Int]) -> Int {
 
 func parseInput(data: String) -> [Int] {
     data
-        .split(separator: "\n")
-        .map { Int($0)! }
+        .trimmingCharacters(in: .newlines)
+        .components(separatedBy: .newlines)
+        .compactMap(Int.init)
 }

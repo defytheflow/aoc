@@ -12,23 +12,23 @@ print(resultTwo)
 assert(resultTwo == 22_088)
 
 func solveOne(input: [Line]) -> Int {
-    solve(lines: input.filter { $0.start.x == $0.end.x || $0.start.y == $0.end.y })
+    solve(input: input.filter { $0.start.x == $0.end.x || $0.start.y == $0.end.y })
 }
 
 func solveTwo(input: [Line]) -> Int {
-    solve(lines: input)
+    solve(input: input)
 }
 
-func solve(lines: [Line]) -> Int {
+func solve(input: [Line]) -> Int {
     var points = [Point: Int]()
 
-    for line in lines {
+    for line in input {
         for point in line.points() {
-            points[point] = (points[point] ?? 0) + 1
+            points[point, default: 0] += 1
         }
     }
 
-    return points.reduce(0) { (total, entry) in entry.value > 1 ? total + 1 : total }
+    return points.filter { $0.value > 1 }.count
 }
 
 struct Line {
@@ -68,14 +68,15 @@ struct Point: Hashable {
 
 func parseInput(data: String) -> [Line] {
     data
-        .split(separator: "\n")
+        .trimmingCharacters(in: .newlines)
+        .components(separatedBy: .newlines)
         .map { line in
             let points = line
                 .split(separator: " -> ")
                 .map { point in
                     let coords = point
-                        .split(separator: ",")
-                        .map { Int($0)! }
+                        .components(separatedBy: ",")
+                        .compactMap(Int.init)
                     return Point(x: coords[0], y: coords[1])
                 }
             return Line(start: points[0], end: points[1])

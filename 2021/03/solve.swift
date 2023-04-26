@@ -11,27 +11,22 @@ let resultTwo = solveTwo(input: input)
 print(resultTwo)
 assert(resultTwo == 5_410_338)
 
-func solveOne(input numbers: [String]) -> Int {
-    var gammaRate = "", epsilonRate = ""
+func solveOne(input: [String]) -> Int {
+    let numberOfBits = input[0].count
+    let numbers = input.compactMap { Int($0, radix: 2) }
+    var gamma = 0, epsilon = 0, mask = 1
 
-    for columnIndex in numbers[0].indices {
-        var counts: [Character: Int] = ["0": 0, "1": 0]
-
-        for rowIndex in numbers.indices {
-            let digit = numbers[rowIndex][columnIndex]
-            counts[digit]! += 1
-        }
-
-        if counts["0"]! > counts["1"]! {
-            gammaRate += "0"
-            epsilonRate += "1"
+    for _ in 1...numberOfBits {
+        let numberOfOnes = numbers.filter { $0 & mask == mask }.count
+        if numberOfOnes > numbers.count / 2 {
+            gamma |= mask
         } else {
-            gammaRate += "1"
-            epsilonRate += "0"
+            epsilon |= mask
         }
+        mask <<= 1
     }
 
-    return Int(gammaRate, radix: 2)! * Int(epsilonRate, radix: 2)!
+    return gamma * epsilon
 }
 
 func solveTwo(input numbers: [String]) -> Int {
@@ -49,11 +44,11 @@ func determine(numbers: [String], criteria: BitCriteria) -> Int {
     var rating = ""
 
     for columnIndex in numbers[0].indices {
-        var counts: [Character: Int] = ["0": 0, "1": 0]
+        var counts = [Character: Int]()
 
         for rowIndex in numbers.indices {
             let digit = numbers[rowIndex][columnIndex]
-            counts[digit]! += 1
+            counts[digit, default: 0] += 1
         }
 
         let digit: Character
@@ -76,6 +71,6 @@ func determine(numbers: [String], criteria: BitCriteria) -> Int {
 
 func parseInput(data: String) -> [String] {
     data
-        .split(separator: "\n")
-        .map { String($0) }
+        .trimmingCharacters(in: .newlines)
+        .components(separatedBy: .newlines)
 }

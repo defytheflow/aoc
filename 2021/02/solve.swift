@@ -11,10 +11,10 @@ let resultTwo = solveTwo(input: input)
 print(resultTwo)
 assert(resultTwo == 1_965_970_888)
 
-func solveOne(input commands: [(Substring, Int)]) -> Int {
+func solveOne(input: [(command: String, count: Int)]) -> Int {
     var depth = 0, position = 0
 
-    for (command, count) in commands {
+    for (command, count) in input {
         switch command {
         case "forward":
             position += count
@@ -30,10 +30,10 @@ func solveOne(input commands: [(Substring, Int)]) -> Int {
     return depth * position
 }
 
-func solveTwo(input commands: [(Substring, Int)]) -> Int {
+func solveTwo(input: [(command: String, count: Int)]) -> Int {
     var depth = 0, position = 0, aim = 0
 
-    for (command, count) in commands {
+    for (command, count) in input {
         switch command {
         case "forward":
             position += count
@@ -50,9 +50,12 @@ func solveTwo(input commands: [(Substring, Int)]) -> Int {
     return depth * position
 }
 
-func parseInput(data: String) -> [(Substring, Int)] {
+func parseInput(data: String) -> [(command: String, count: Int)] {
     data
-        .split(separator: "\n")
-        .map { $0.split(separator: " ") }
-        .map { ($0[0], Int($0[1])!) }
+        .trimmingCharacters(in: .newlines)
+        .components(separatedBy: .newlines)
+        .map {
+            let parts = $0.split(separator: " ")
+            return (String(parts[0]), Int(parts[1])!)
+        }
 }

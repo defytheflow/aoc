@@ -19,14 +19,15 @@ func solveTwo(input: [Int]) -> Int {
     solve(input: input, count: 3)
 }
 
-func solve(input measurements: [Int], count: Int) -> Int {
-    zip(measurements, measurements.dropFirst(count))
-        .map { ($0.0 < $0.1) ? 1 : 0 }
-        .reduce(0, +)
+func solve(input: [Int], count: Int) -> Int {
+    zip(input, input.dropFirst(count))
+        .filter { $0.0 < $0.1 }
+        .count
 }
 
 func parseInput(data: String) -> [Int] {
     data
-        .split(separator: "\n")
-        .map { Int($0)! }
+        .trimmingCharacters(in: .newlines)
+        .components(separatedBy: .newlines)
+        .compactMap(Int.init)
 }

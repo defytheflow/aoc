@@ -132,12 +132,22 @@ struct Board {
 
 func parseInput(data: String) -> ([Int], [Board]) {
     let array = data.split(separator: "\n\n")
-    let numbers = array[0].split(separator: ",").map { Int($0)! }
-    let boards = array[1..<array.count]
+
+    let numbers = array[0]
+        .components(separatedBy: ",")
+        .compactMap(Int.init)
+
+    let boards = array
+        .dropFirst()
         .map {
             Board(data: $0
-              .split(separator: "\n")
-              .flatMap { $0.split(separator: " ").map { Int($0)! } })
+                .components(separatedBy: .newlines)
+                .flatMap { $0
+                    .components(separatedBy: " ")
+                    .compactMap(Int.init)
+                }
+            )
         }
+
     return (numbers, boards)
 }

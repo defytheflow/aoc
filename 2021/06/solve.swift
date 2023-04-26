@@ -7,39 +7,38 @@ let resultOne = solveOne(input: input)
 print(resultOne)
 assert(resultOne == 372_300)
 
-/* let resultTwo = solveTwo(input: input) */
-/* print(resultTwo) */
+let resultTwo = solveTwo(input: input)
+print(resultTwo)
+assert(resultTwo == 1_675_781_200_288)
 
 func solveOne(input: [Int]) -> Int {
-    solve(input: input, numberOfDays: 80)
+    solve(input: input, for: 80)
 }
 
 func solveTwo(input: [Int]) -> Int {
-    solve(input: input, numberOfDays: 256)
+    solve(input: input, for: 256)
 }
 
-func solve(input: [Int], numberOfDays: Int) -> Int {
-    var timers = input
-    let resetTimer = 6
-    let newTimer = 8
+func solve(input: [Int], for numberOfDays: Int) -> Int {
+    var ages = input.reduce(into: [Int: Int](), { dict, age in
+        dict[age, default: 0] += 1
+    })
 
     for _ in 1...numberOfDays {
-        for index in 0..<timers.count {
-            if timers[index] == 0 {
-                timers[index] = resetTimer
-                timers.append(newTimer)
-            } else {
-                timers[index] -= 1
-            }
+        let newFish = ages[0, default: 0]
+        for i in 1...8 {
+            ages[i - 1] = ages[i, default: 0]
         }
+        ages[6, default: 0] += newFish
+        ages[8] = newFish
     }
 
-    return timers.count
+    return ages.values.reduce(0, +)
 }
 
 func parseInput(data: String) -> [Int] {
     data
         .trimmingCharacters(in: .newlines)
-        .split(separator: ",")
-        .map { Int($0)! }
+        .components(separatedBy: ",")
+        .compactMap(Int.init)
 }

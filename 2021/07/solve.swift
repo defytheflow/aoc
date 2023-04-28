@@ -1,7 +1,6 @@
 import Foundation
 
-let data = try String(contentsOfFile: "input.txt")
-let input = parseInput(data: data)
+let input = parseInput(data: try String(contentsOfFile: "input.txt"))
 
 let resultOne = solveOne(input: input)
 print(resultOne)

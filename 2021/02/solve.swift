@@ -1,14 +1,18 @@
 import Foundation
 
-let input = parseInput(data: try String(contentsOfFile: "input.txt"))
+main()
 
-let resultOne = solveOne(input: input)
-print(resultOne)
-assert(resultOne == 1_868_935)
+func main() {
+    let input = parseInput(data: try! String(contentsOfFile: "input.txt"))
 
-let resultTwo = solveTwo(input: input)
-print(resultTwo)
-assert(resultTwo == 1_965_970_888)
+    let resultOne = solveOne(input: input)
+    print(resultOne)
+    assert(resultOne == 1_868_935)
+
+    let resultTwo = solveTwo(input: input)
+    print(resultTwo)
+    assert(resultTwo == 1_965_970_888)
+}
 
 func solveOne(input: [(command: String, count: Int)]) -> Int {
     var depth = 0, position = 0

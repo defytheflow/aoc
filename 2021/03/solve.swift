@@ -1,14 +1,18 @@
 import Foundation
 
-let input = parseInput(data: try String(contentsOfFile: "input.txt"))
+main()
 
-let resultOne = solveOne(input: input)
-print(resultOne)
-assert(resultOne == 3_429_254)
+func main() {
+    let input = parseInput(data: try! String(contentsOfFile: "input.txt"))
 
-let resultTwo = solveTwo(input: input)
-print(resultTwo)
-assert(resultTwo == 5_410_338)
+    let resultOne = solveOne(input: input)
+    print(resultOne)
+    assert(resultOne == 3_429_254)
+
+    let resultTwo = solveTwo(input: input)
+    print(resultTwo)
+    assert(resultTwo == 5_410_338)
+}
 
 func solveOne(input: [String]) -> Int {
     let numberOfBits = input[0].count

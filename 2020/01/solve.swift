@@ -1,15 +1,18 @@
 import Foundation
 
-let data = try String(contentsOfFile: "input.txt")
-let input = parseInput(data: data)
+main()
 
-let resultOne = solveOne(input: input)
-print(resultOne)
-assert(resultOne == 1_018_944)
+func main() {
+    let input = parseInput(data: try! String(contentsOfFile: "input.txt"))
 
-let resultTwo = solveTwo(input: input)
-print(resultTwo)
-assert(resultTwo == 8_446_464)
+    let resultOne = solveOne(input: input)
+    print(resultOne)
+    assert(resultOne == 1_018_944)
+
+    let resultTwo = solveTwo(input: input)
+    print(resultTwo)
+    assert(resultTwo == 8_446_464)
+}
 
 func solveOne(input numbers: [Int]) -> Int {
     let sum = 2020

@@ -1,14 +1,18 @@
 import Foundation
 
-let input = parseInput(data: try String(contentsOfFile: "input.txt"))
+main()
 
-let resultOne = solveOne(input: input)
-print(resultOne)
-assert(resultOne == 468)
+func main() {
+    let input = parseInput(data: try! String(contentsOfFile: "input.txt"))
 
-let resultTwo = solveTwo(input: input)
-print(resultTwo)
-assert(resultTwo == 1_280_496)
+    let resultOne = solveOne(input: input)
+    print(resultOne)
+    assert(resultOne == 468)
+
+    let resultTwo = solveTwo(input: input)
+    print(resultTwo)
+    assert(resultTwo == 1_280_496)
+}
 
 func solveOne(input matrix: [[Int]]) -> Int {
     findLowestPoints(in: matrix)

@@ -3,7 +3,10 @@ import Foundation
 main()
 
 func main() {
-    let data = try! String(contentsOfFile: "input.txt")
+    let inputFileURL = URL(fileURLWithPath: #file)
+        .deletingLastPathComponent()
+        .appendingPathComponent("input.txt")
+    let data = try! String(contentsOf: inputFileURL)
 
     let resultOne = solveOne(data: data)
     print(resultOne)

@@ -17,7 +17,7 @@ function main() {
 
   const resultOne = solveOne(input);
   console.log(resultOne);
-  console.assert(resultOne == 2776);
+  console.assert(resultOne == 2_776);
 
   const resultTwo = solveTwo(input);
   console.log(resultTwo);
@@ -68,6 +68,7 @@ function parseInput(filename: string): Input {
   return fs
     .readFileSync(filename)
     .toString()
+    .trimEnd()
     .split(/\n|\r\n/)
     .map(line => {
       line = line.slice(5);

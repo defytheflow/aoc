@@ -28,6 +28,7 @@ function parseInput(filename: string): Input {
   return fs
     .readFileSync(filename)
     .toString()
+    .trimEnd()
     .split(/\n|\r\n/)
     .map(
       line =>

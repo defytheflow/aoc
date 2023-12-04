@@ -117,7 +117,7 @@ function toNumber(theNumber: TNumber): number {
 }
 
 function parseInput(filename: string): Input {
-  const content = fs.readFileSync(filename).toString();
+  const content = fs.readFileSync(filename).toString().trimEnd();
   return { grid: parseGrid(content), numbers: parseNumbers(content) };
 
   // --------------------------------------------------------------------------------

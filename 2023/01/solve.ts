@@ -69,6 +69,6 @@ function parseInput(filename: string): Input {
   return fs
     .readFileSync(filename)
     .toString()
-    .split(/\n|\r\n/)
-    .filter(Boolean);
+    .trimEnd()
+    .split(/\n|\r\n/);
 }

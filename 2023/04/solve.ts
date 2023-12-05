@@ -13,7 +13,7 @@ function main() {
 
   const resultTwo = solveTwo(input);
   console.log(resultTwo);
-  // console.assert(resultTwo == );
+  console.assert(resultTwo == 8_063_216);
 }
 
 function solveOne(input: Input): number {
@@ -22,7 +22,22 @@ function solveOne(input: Input): number {
     .reduce((total, winning) => total + Math.floor(2 ** (winning.length - 1)), 0);
 }
 
-function solveTwo(input: Input): number {}
+function solveTwo(input: Input): number {
+  const cardNumbers = Array.from({ length: input.length }, (_, i) => i + 1);
+
+  const wonCardNumbers: Record<number, number[]> = {};
+  for (const [index, [winning, mine]] of input.entries()) {
+    const myWinning = mine.filter(n => winning.includes(n));
+    wonCardNumbers[index + 1] = myWinning.map((_, i) => index + 1 + i + 1);
+  }
+
+  for (let i = 0; i < cardNumbers.length; i++) {
+    const cardNumber = cardNumbers[i];
+    cardNumbers.push(...wonCardNumbers[cardNumber]);
+  }
+
+  return cardNumbers.length;
+}
 
 function parseInput(filename: string): Input {
   return fs

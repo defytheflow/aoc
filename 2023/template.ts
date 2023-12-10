@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-type Input = unknown;
+type Input = string;
 
 main();
 
@@ -16,9 +16,13 @@ function main() {
   console.assert(resultTwo == Infinity);
 }
 
-function solveOne(input: Input): unknown {}
+function solveOne(input: Input): number {
+  return Infinity;
+}
 
-function solveTwo(input: Input): unknown {}
+function solveTwo(input: Input): number {
+  return Infinity;
+}
 
 function parseInput(filename: string): Input {
   return fs

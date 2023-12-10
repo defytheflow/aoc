@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
+    "target": "es2015",
     "module": "es2022",
     "lib": ["ES2021", "ES2023.Array"],
     "esModuleInterop": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "strict": true,
-    "noUncheckedIndexedAccess": true
+    "strict": true
   }
 }

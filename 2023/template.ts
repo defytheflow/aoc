@@ -5,7 +5,7 @@ type Input = string;
 main();
 
 function main() {
-  const input = parseInput("input.txt");
+  const input = parseInput("example.txt");
 
   const resultOne = solveOne(input);
   console.log(resultOne);

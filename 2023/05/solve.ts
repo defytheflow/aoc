@@ -51,7 +51,11 @@ function solveTwo(input: Input): number {
 }
 
 function parseInput(filename: string): Input {
-  const content = fs.readFileSync(filename).toString().trimEnd();
+  const content = fs
+    .readFileSync(new URL(filename, import.meta.url).pathname)
+    .toString()
+    .trimEnd();
+
   const [seeds, ...maps] = content.split("\n\n");
   return { seeds: parseSeeds(seeds), maps: parseMaps(maps) };
 

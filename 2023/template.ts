@@ -21,5 +21,8 @@ function solveOne(input: Input): unknown {}
 function solveTwo(input: Input): unknown {}
 
 function parseInput(filename: string): Input {
-  return fs.readFileSync(filename).toString().trimEnd();
+  return fs
+    .readFileSync(new URL(filename, import.meta.url).pathname)
+    .toString()
+    .trimEnd();
 }

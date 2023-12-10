@@ -1,14 +1,22 @@
 import fs from "node:fs";
 
+type Input = Game[];
+
+type Game = {
+  id: number;
+  rounds: Round[];
+};
+
+type Round = {
+  number: number;
+  color: Color;
+};
+
 enum Color {
   RED = "red",
   GREEN = "green",
   BLUE = "blue",
 }
-
-type Game = { id: number; rounds: Round[] };
-type Round = { number: number; color: Color };
-type Input = Game[];
 
 main();
 
@@ -66,7 +74,7 @@ function solveTwo(input: Input): number {
 
 function parseInput(filename: string): Input {
   return fs
-    .readFileSync(filename)
+    .readFileSync(new URL(filename, import.meta.url).pathname)
     .toString()
     .trimEnd()
     .split(/\n|\r\n/)

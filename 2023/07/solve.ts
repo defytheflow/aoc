@@ -106,7 +106,7 @@ function solveTwo(input: Input): unknown {
 
 function parseInput(filename: string): Input {
   return fs
-    .readFileSync(filename)
+    .readFileSync(new URL(filename, import.meta.url).pathname)
     .toString()
     .trimEnd()
     .split(/\n|\r\n/)

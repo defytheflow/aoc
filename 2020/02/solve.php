@@ -7,8 +7,12 @@ function main()
     $input = parseInput(file_get_contents(__DIR__ . "/input.txt"));
 
     $resultOne = solveOne($input);
-    echo $resultOne;
+    echo $resultOne, PHP_EOL;
     assert($resultOne == 625);
+
+    $resultTwo = solveTwo($input);
+    echo $resultTwo, PHP_EOL;
+    assert($resultTwo == 391);
 }
 
 /** @param ListEntry[] $input */
@@ -16,6 +20,14 @@ function solveOne(array $input): int
 {
     return count(array_filter($input, function ($entry) {
         return $entry->isValid();
+    }));
+}
+
+/** @param ListEntry[] $input */
+function solveTwo(array $input): int
+{
+    return count(array_filter($input, function ($entry) {
+        return $entry->isValidNew();
     }));
 }
 
@@ -45,6 +57,17 @@ class ListEntry
     {
         $letterCount = substr_count($this->password, $this->letter);
         return $this->minCount <= $letterCount && $letterCount <= $this->maxCount;
+    }
+
+    public function isValidNew(): bool
+    {
+        $firstIndex = $this->minCount - 1;
+        $secondIndex = $this->maxCount - 1;
+
+        $firstCondition = $this->password[$firstIndex] == $this->letter;
+        $secondCondition = $this->password[$secondIndex] == $this->letter;
+
+        return $firstCondition != $secondCondition;
     }
 
     public static function fromInput(string $line): ListEntry

@@ -4,25 +4,27 @@ main();
 
 function main()
 {
-    $input = file_get_contents(__DIR__ . "/input.txt");
+    $input = parseInput(file_get_contents(__DIR__ . "/input.txt"));
+
     $resultOne = solveOne($input);
-    print $resultOne . "\n";
+    echo $resultOne;
+    assert($resultOne == 625);
 }
 
-function solveOne(string $input): int
+/** @param ListEntry[] $input */
+function solveOne(array $input): int
 {
-    $lines = parseInput($input);
-
-    return count(array_filter($lines, function ($entry) {
+    return count(array_filter($input, function ($entry) {
         return $entry->isValid();
     }));
 }
 
+/** @return ListEntry[] */
 function parseInput(string $input)
 {
     return array_map(
         function ($line) {
-            return new ListEntry($line);
+            return ListEntry::fromInput($line);
         },
         explode(PHP_EOL, trim($input))
     );
@@ -30,25 +32,30 @@ function parseInput(string $input)
 
 class ListEntry
 {
-    private int $minCount;
-    private int $maxCount;
-    private string $letter;
-    private string $password;
-
-    public function __construct(string $line)
+    public function __construct(
+        private int $minCount,
+        private int $maxCount,
+        private string $letter,
+        private string $password,
+    )
     {
-        [$policy, $letter, $password] = explode(" ", $line);
-        [$minCount, $maxCount] = explode("-", $policy);
-
-        $this->letter = rtrim($letter, ":");
-        $this->password = $password;
-        $this->minCount = (int)$minCount;
-        $this->maxCount = (int)$maxCount;
     }
 
     public function isValid(): bool
     {
         $letterCount = substr_count($this->password, $this->letter);
         return $this->minCount <= $letterCount && $letterCount <= $this->maxCount;
+    }
+
+    public static function fromInput(string $line): ListEntry
+    {
+        [$policy, $letter, $password] = explode(" ", $line);
+        [$minCount, $maxCount] = explode("-", $policy);
+
+        $letter = rtrim($letter, ":");
+        $minCount = (int)$minCount;
+        $maxCount = (int)$maxCount;
+
+        return new static($minCount, $maxCount, $letter, $password);
     }
 }

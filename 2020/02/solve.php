@@ -1,16 +1,5 @@
 <?php
 
-class ListEntry
-{
-    public function __construct(
-        public int $minCount,
-        public int $maxCount,
-        public string $letter,
-        public string $password,
-    )
-    {}
-}
-
 function main(): void
 {
     $input = parseInput("input.txt");
@@ -58,6 +47,17 @@ function parseInput(string $filename): array
 
     $input = trim(file_get_contents(__DIR__ . "/" . $filename));
     return array_map($parseListEntry, explode(PHP_EOL, $input));
+}
+
+class ListEntry
+{
+    public function __construct(
+        public int $minCount,
+        public int $maxCount,
+        public string $letter,
+        public string $password,
+    )
+    {}
 }
 
 main();

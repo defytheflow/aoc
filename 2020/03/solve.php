@@ -1,12 +1,5 @@
 <?php
 
-class Point
-{
-    public function __construct(public int $x, public int $y)
-    {
-    }
-}
-
 function main(): void
 {
     $input = parseInput("input.txt");
@@ -71,5 +64,11 @@ function parseInput(string $filename): array
     return explode(PHP_EOL, $input);
 }
 
-main();
+class Point
+{
+    public function __construct(public int $x, public int $y)
+    {
+    }
+}
 
+main();

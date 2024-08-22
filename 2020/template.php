@@ -30,4 +30,3 @@ function parseInput(string $filename): string
 }
 
 main();
-

@@ -16,51 +16,32 @@ function main(): void
 /** @param Field[][] $input */
 function solveOne(array $input): int
 {
-    return count(
-        array_filter(
-            $input,
-            'hasRequiredFields',
-        )
-    );
+    $requiredFieldNames = array_map(fn ($field) => $field->value, REQUIRED_FIELD_NAMES);
+
+    /** @param Field[] $fields */
+    $isValid = function ($fields) use (&$requiredFieldNames) {
+        $fieldNames = array_map(fn ($field) => $field->name->value, $fields);
+        return !array_diff($requiredFieldNames, $fieldNames);
+    };
+
+    return count(array_filter($input, $isValid));
 }
 
 /** @param Field[][] $input */
 function solveTwo(array $input): int
 {
-    return count(
-        array_filter(
-            $input,
-            function ($passport) {
-                return (
-                    hasRequiredFields($passport) &&
-                    count(array_filter($passport, fn ($field) => $field->isValid())) == count($passport)
-                );
-            }
-        )
-    );
-}
+    $requiredFieldNames = array_map(fn ($field) => $field->value, REQUIRED_FIELD_NAMES);
 
-function hasRequiredFields(array $passport): bool
-{
-    $requiredFields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
-    return count(
-        array_filter(
-            $requiredFields,
-            function ($field) use ($passport) {
-                $exists = false;
+    /** @param Field[] $fields */
+    $isValid = function ($fields) use (&$requiredFieldNames) {
+        $validFieldNames = array_map(
+            fn ($field) => $field->name->value,
+            array_filter($fields, fn ($field) => $field->isValid())
+        );
+        return !array_diff($requiredFieldNames, $validFieldNames);
+    };
 
-                foreach ($passport as $value) {
-                    if (str_contains($value->name, $field)) {
-                        $exists = true;
-                        break;
-                    }
-                }
-
-                return $exists;
-
-            }
-        )
-    ) == count($requiredFields);
+    return count(array_filter($input, $isValid));
 }
 
 /** @return Field[][] */
@@ -69,35 +50,60 @@ function parseInput(string $filename): array
     $input = trim(file_get_contents(__DIR__ . "/" . $filename));
 
     return array_map(
-        function ($line) {
-            $array = preg_split("/\s/", $line);
-
+        function ($chunk) {
             return array_map(
                 function ($field) {
                     [$name, $value] = explode(":", $field);
+                    $fieldName = FieldName::from($name);
 
-                    $x = (match ($name) {
-                        "byr" => "BirthYear",
-                        "iyr" => "IssueYear",
-                        "eyr" => "ExpirationYear",
-                        "hgt" => "Height",
-                        "hcl" => "HairColor",
-                        "ecl" => "EyeColor",
-                        "pid" => "PassportId",
-                        "cid" => "CountryId",
+                    $className = (match ($fieldName) {
+                        FieldName::BirthYear => "BirthYear",
+                        FieldName::IssueYear => "IssueYear",
+                        FieldName::ExpirationYear => "ExpirationYear",
+                        FieldName::Height => "Height",
+                        FieldName::HairColor => "HairColor",
+                        FieldName::EyeColor => "EyeColor",
+                        FieldName::PassportId => "PassportId",
+                        FieldName::CountryId => "CountryId",
                     });
 
-                    return new $x($name, $value);
+                    return new $className($fieldName, $value);
                 },
-                $array
+                preg_split("/\s/", $chunk)
             );
         },
         explode(PHP_EOL . PHP_EOL, $input)
     );
 }
 
+enum FieldName: string
+{
+    case BirthYear = "byr";
+    case IssueYear = "iyr";
+    case ExpirationYear = "eyr";
+    case Height = "hgt";
+    case HairColor = "hcl";
+    case EyeColor = "ecl";
+    case PassportId = "pid";
+    case CountryId = "cid";
+}
+
+/** @var FieldName[] */
+const REQUIRED_FIELD_NAMES = [
+    FieldName::BirthYear,
+    FieldName::IssueYear,
+    FieldName::ExpirationYear,
+    FieldName::Height,
+    FieldName::HairColor,
+    FieldName::EyeColor,
+    FieldName::PassportId,
+];
+
 abstract class Field {
-    public function __construct(public string $name, public string $value) {}
+    public function __construct(public FieldName $name, public string $value)
+    {
+    }
+
     abstract public function isValid(): bool;
 }
 
@@ -120,6 +126,11 @@ class ExpirationYear extends Field {
     {
         return isFourDigitNumberInRange($this->value, 2020, 2030);
     }
+}
+
+function isFourDigitNumberInRange(string $numStr, int $start, int $end): bool
+{
+    return preg_match("/^[0-9]{4}$/", $numStr) && $start <= $numStr && $numStr <= $end;
 }
 
 class Height extends Field {
@@ -147,10 +158,11 @@ class HairColor extends Field {
 }
 
 class EyeColor extends Field {
+    private const VALID_COLORS = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
+
     public function isValid(): bool
     {
-        $validColors = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
-        return in_array($this->value, $validColors);
+        return in_array($this->value, self::VALID_COLORS);
     }
 }
 
@@ -166,11 +178,6 @@ class CountryId extends Field {
     {
         return true;
     }
-}
-
-function isFourDigitNumberInRange(string $numStr, int $start, int $end): bool
-{
-    return preg_match("/^[0-9]{4}$/", $numStr) && $start <= $numStr && $numStr <= $end;
 }
 
 main();

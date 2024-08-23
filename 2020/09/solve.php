@@ -66,16 +66,19 @@ function parseInput(string $filename): array
 /** @param int[] $numbers */
 function twoSum(array $numbers, int $target): bool
 {
+    /** @var array<int, bool> */
+    $map = [];
+
     for ($i = 0; $i < count($numbers); $i++) {
-        for ($j = 0; $j < count($numbers); $j++) {
-            if ($i == $j) {
-                continue;
-            }
-            if ($numbers[$i] + $numbers[$j] == $target) {
-                return true;
-            }
+        $n = $numbers[$i];
+
+        if (array_key_exists($n, $map)) {
+            return true;
+        } else {
+            $map[$target - $n] = true;
         }
     }
+
     return false;
 }
 

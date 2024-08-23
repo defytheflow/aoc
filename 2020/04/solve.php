@@ -72,7 +72,7 @@ function parseInput(string $filename): array
                 preg_split("/\s/", $chunk)
             );
         },
-        explode(PHP_EOL . PHP_EOL, $input)
+        explode(str_repeat(PHP_EOL, 2), $input)
     );
 }
 

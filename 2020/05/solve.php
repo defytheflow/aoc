@@ -57,7 +57,7 @@ class Seat
         return $this->row * 8 + $this->column;
     }
 
-    public static function fromString(string $line): Seat
+    public static function fromString(string $line): static
     {
         $rowStart = 0;
         $rowEnd = 127;

@@ -13,7 +13,7 @@ function main(): void
     assert($resultTwo == 2251);
 }
 
-/** @param string[] $input */
+/** @param Instruction[] $input */
 function solveOne(array $input): int
 {
     $interpreter = new Interpreter();
@@ -21,41 +21,62 @@ function solveOne(array $input): int
     return $interpreter->acc;
 }
 
-/** @param string[] $input */
+/** @param Instruction[] $input */
 function solveTwo(array $input): int
 {
-    $instructions = &$input;
-
-    foreach ($instructions as $index => $instruction) {
-        if (str_starts_with($instruction, "nop")) {
-            $instructions[$index] = str_replace("nop", "jmp", $instruction);
-        } elseif (str_starts_with($instruction, "jmp")) {
-            $instructions[$index] = str_replace("jmp", "nop", $instruction);
+    foreach ($input as $index => $instruction) {
+        if ($instruction->operation == Operation::NOP) {
+            $newInstruction = new Instruction(Operation::JMP, $instruction->argument);
+        } elseif ($instruction->operation == Operation::JMP) {
+            $newInstruction = new Instruction(Operation::NOP, $instruction->argument);
+        } else {
+            continue;
         }
 
+        $input[$index] = $newInstruction;
         $interpeter = new Interpreter();
-        if ($interpeter->execute($instructions)) {
+
+        if ($interpeter->execute($input)) {
             return $interpeter->acc;
         }
 
-        $instructions[$index] = $instruction;
+        $input[$index] = $instruction;
     }
-
     return -1;
 }
 
-/** @returns string[] */
+/** @returns Instruction[] */
 function parseInput(string $filename): array
 {
     $input = trim(file_get_contents(__DIR__ . "/" . $filename));
-    return explode(PHP_EOL, $input);
+    return array_map(
+        function ($line) {
+            [$operation, $argument] = explode(" ", $line);
+            return new Instruction(Operation::from($operation), intval($argument));
+        },
+        explode(PHP_EOL, $input)
+    );
+}
+
+enum Operation : string
+{
+    case NOP = "nop";
+    case ACC = "acc";
+    case JMP = "jmp";
+}
+
+class Instruction
+{
+    public function __construct(public Operation $operation, public int $argument)
+    {
+    }
 }
 
 class Interpreter
 {
     public int $acc = 0;
 
-    /** @param string[] $instructions */
+    /** @param Instruction[] $instructions */
     public function execute(array $instructions): bool
     {
         $ip = 0;
@@ -68,20 +89,18 @@ class Interpreter
             }
 
             array_push($ranInstructions, $ip);
+            $instruction = $instructions[$ip];
 
-            [$operation, $argument] = explode(" ", $instructions[$ip]);
-            $argument = intval($argument);
-
-            switch ($operation) {
-                case "nop":
+            switch ($instruction->operation) {
+                case Operation::NOP:
                     $ip++;
                     break;
-                case "acc":
-                    $this->acc += $argument;
+                case Operation::ACC:
+                    $this->acc += $instruction->argument;
                     $ip++;
                     break;
-                case "jmp":
-                    $ip += $argument;
+                case Operation::JMP:
+                    $ip += $instruction->argument;
                     break;
             }
         }

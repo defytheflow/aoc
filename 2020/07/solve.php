@@ -17,55 +17,41 @@ function main(): void
 function solveOne(array $input): int
 {
     $bagMap = buildBagMap($input);
-    $shinyGoldColors = [];
 
-    foreach ($bagMap as $color => $colorMap) {
-        if (recOne($bagMap, $colorMap)) {
-            array_push($shinyGoldColors, $color);
+    /** @param array<str, int> $colorMap */
+    $canContain = function (array $colorMap) use (&$bagMap, &$canContain): bool {
+        foreach (array_keys($colorMap) as $color) {
+            if ($color == "shiny gold") {
+                return true;
+            }
+            if ($canContain($bagMap[$color])) {
+                return true;
+            }
         }
-    }
+        return false;
+    };
 
-    return count(array_unique($shinyGoldColors));
-}
-
-/**
-    @param array<str, array<str, int>> $bagMap
-    @param array<str, int> $colorMap
-*/
-function recOne(&$bagMap, &$colorMap): bool
-{
-    foreach (array_keys($colorMap) as $innerColor) {
-        if ($innerColor == "shiny gold") {
-            return true;
-        }
-        if (recOne($bagMap, $bagMap[$innerColor])) {
-            return true;
-        }
-    }
-    return false;
+    return count(array_filter($bagMap, $canContain));
 }
 
 /** @param string[] */
 function solveTwo(array $input): int
 {
     $bagMap = buildBagMap($input);
-    return recTwo($bagMap, $bagMap["shiny gold"]);
-}
 
-/**
-    @param array<str, array<str, int>> $bagMap
-    @param array<str, int> $colorMap
-*/
-function recTwo(&$bagMap, &$colorMap): int
-{
-    $count = 0;
+    /** @param array<str, int> $colorMap */
+    $countBags = function (array $colorMap) use (&$bagMap, &$countBags): int {
+        $bagCount = 0;
 
-    foreach ($colorMap as $innerColor => $innerCount) {
-        $count += $innerCount;
-        $count += $innerCount * recTwo($bagMap, $bagMap[$innerColor]) ;
-    }
+        foreach ($colorMap as $color => $count) {
+            $bagCount += $count;
+            $bagCount += $count * $countBags($bagMap[$color]) ;
+        }
 
-    return $count;
+        return $bagCount;
+    };
+
+    return $countBags($bagMap["shiny gold"]);
 }
 
 /** @return string[] */
@@ -85,25 +71,20 @@ function buildBagMap(array $input): array
     $bagMap = [];
 
     foreach ($input as $line) {
-        $words = str_word_count($line, 1, '1234567890');
-        $color = $words[0] . " " . $words[1];
+        $words = str_word_count($line, 1, "1234567890");
+        $color = "$words[0] $words[1]";
+        $bagMap[$color] = [];
 
         if (str_ends_with($line, "no other bags.")) {
-            $bagMap[$color] = [];
             continue;
         }
 
+        $colorMap = &$bagMap[$color];
+        $otherWords = array_slice($words, 4);
 
-        /** @var array<str, int> */
-        $innerBagMap = [];
-        $words = array_slice($words, 4);
-
-        foreach (array_chunk($words, 4) as [$count, $color1, $color2]) {
-            $innerColor = $color1 . " " . $color2;
-            $innerBagMap[$innerColor] = intval($count);
+        foreach (array_chunk($otherWords, 4) as [$count, $color1, $color2]) {
+            $colorMap["$color1 $color2"] = intval($count);
         }
-
-        $bagMap[$color] = $innerBagMap;
     }
 
     return $bagMap;

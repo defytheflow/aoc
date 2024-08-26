@@ -7,6 +7,10 @@ function main(): void
     $resultOne = solveOne($input);
     echo $resultOne, PHP_EOL;
     assert($resultOne == 1_018_944);
+
+    $resultTwo = solveTwo($input);
+    echo $resultTwo, PHP_EOL;
+    assert($resultTwo == 8_446_464);
 }
 
 /** @param string[] */
@@ -22,6 +26,24 @@ function solveOne(array $input): int
             return $number * $diff;
         }
         array_push($seen, $number);
+    }
+
+    return -1;
+}
+
+/** @param string[] */
+function solveTwo(array $input): int
+{
+    $targetSum = 2020;
+
+    for ($i = 0; $i < count($input) - 2; $i++) {
+        for ($j = $i + 1; $j < count($input) - 1; $j++) {
+            for ($k = $j + 1; $k < count($input); $k++) {
+                if ($input[$i] + $input[$j] + $input[$k] == $targetSum) {
+                    return $input[$i] * $input[$j] * $input[$k];
+                }
+            }
+        }
     }
 
     return -1;

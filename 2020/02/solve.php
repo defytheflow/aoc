@@ -56,8 +56,8 @@ class ListEntry
         public int $maxCount,
         public string $letter,
         public string $password,
-    )
-    {}
+    ) {
+    }
 }
 
 main();

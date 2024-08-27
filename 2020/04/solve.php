@@ -99,7 +99,8 @@ const REQUIRED_FIELD_NAMES = [
     FieldName::PassportId,
 ];
 
-abstract class Field {
+abstract class Field
+{
     public function __construct(public FieldName $name, public string $value)
     {
     }
@@ -107,21 +108,24 @@ abstract class Field {
     abstract public function isValid(): bool;
 }
 
-class BirthYear extends Field {
+class BirthYear extends Field
+{
     public function isValid(): bool
     {
         return isFourDigitNumberInRange($this->value, 1920, 2002);
     }
 }
 
-class IssueYear extends Field {
+class IssueYear extends Field
+{
     public function isValid(): bool
     {
         return isFourDigitNumberInRange($this->value, 2010, 2020);
     }
 }
 
-class ExpirationYear extends Field {
+class ExpirationYear extends Field
+{
     public function isValid(): bool
     {
         return isFourDigitNumberInRange($this->value, 2020, 2030);
@@ -133,7 +137,8 @@ function isFourDigitNumberInRange(string $numStr, int $start, int $end): bool
     return preg_match("/^[0-9]{4}$/", $numStr) && $start <= $numStr && $numStr <= $end;
 }
 
-class Height extends Field {
+class Height extends Field
+{
     public function isValid(): bool
     {
         if (!preg_match_all("/^([0-9]+)(cm|in)$/", $this->value, $match)) {
@@ -150,14 +155,16 @@ class Height extends Field {
     }
 }
 
-class HairColor extends Field {
+class HairColor extends Field
+{
     public function isValid(): bool
     {
         return preg_match("/^#[0-9a-f]{6}$/", $this->value);
     }
 }
 
-class EyeColor extends Field {
+class EyeColor extends Field
+{
     private const VALID_COLORS = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
 
     public function isValid(): bool
@@ -166,14 +173,16 @@ class EyeColor extends Field {
     }
 }
 
-class PassportId extends Field {
+class PassportId extends Field
+{
     public function isValid(): bool
     {
         return preg_match("/^[0-9]{9}$/", $this->value);
     }
 }
 
-class CountryId extends Field {
+class CountryId extends Field
+{
     public function isValid(): bool
     {
         return true;

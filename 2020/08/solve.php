@@ -58,7 +58,7 @@ function parseInput(string $filename): array
     );
 }
 
-enum Operation : string
+enum Operation: string
 {
     case NOP = "nop";
     case ACC = "acc";

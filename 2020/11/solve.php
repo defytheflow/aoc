@@ -16,12 +16,64 @@ function main(): void
 /** @param PositionType[][] $input */
 function solveOne(array $input): int
 {
+    return solve($input, isOccupied: 'isImmediatelyAdjacent', limit: 4);
+}
+
+/** @param PositionType[][] $layout */
+function isImmediatelyAdjacent(array &$layout, int $x, int $y, int $dx, int $dy): bool
+{
+    $ax = $x + $dx;
+    $ay = $y + $dy;
+
+    return (
+        0 <= $ax && $ax < count($layout[$y]) &&
+        0 <= $ay && $ay < count($layout) &&
+        $layout[$ay][$ax] == PositionType::OCCUPIED_SEAT
+    );
+}
+
+/** @param PositionType[][] $input */
+function solveTwo(array $input): int
+{
+    return solve($input, isOccupied: 'isDistantAdjacent', limit: 5);
+}
+
+/** @param PositionType[][] $layout */
+function isDistantAdjacent(array &$layout, int $x, int $y, int $dx, int $dy): bool
+{
+    $ax = $x + $dx;
+    $ay = $y + $dy;
+
+    while (0 <= $ax && $ax < count($layout[$y]) && 0 <= $ay && $ay < count($layout)) {
+        $seat = $layout[$ay][$ax];
+
+        if ($seat == PositionType::OCCUPIED_SEAT) {
+            return true;
+        }
+
+        if ($seat == PositionType::EMPTY_SEAT) {
+            return false;
+        }
+
+        $ax += $dx;
+        $ay += $dy;
+    }
+
+    return false;
+}
+
+/**
+ * @param PositionType[][] $input
+ * @param callable(PositionType[][], int, int, int, int): bool $isOccupied
+ */
+function solve(array &$input, callable $isOccupied, int $limit): int
+{
     $previousLayout = null;
     $currentLayout = &$input;
 
     while ($currentLayout != $previousLayout) {
         $previousLayout = $currentLayout;
-        $currentLayout = createNextLayout($currentLayout, 'getAdjacentOccupiedSeats', 4);
+        $currentLayout = createNextLayout($currentLayout, $isOccupied, $limit);
     }
 
     $count = 0;
@@ -37,24 +89,48 @@ function solveOne(array $input): int
     return $count;
 }
 
-/** @param PositionType[][] $input */
-function solveTwo(array $input): int
+/**
+ * @param PositionType[][] $layout
+ * @param callable(PositionType[][], int, int, int, int): bool $isOccupied
+ */
+function createNextLayout(array &$layout, callable $isOccupied, int $limit): array
 {
-    $previousLayout = null;
-    $currentLayout = &$input;
+    $nextLayout = [];
 
-    while ($currentLayout != $previousLayout) {
-        $previousLayout = $currentLayout;
-        $currentLayout = createNextLayout($currentLayout, 'getAdjacentOccupiedSeatsTwo', 5);
+    for ($y = 0; $y < count($layout); $y++) {
+        $nextRow = [];
+
+        for ($x = 0; $x < count($layout[$y]); $x++) {
+            $adjacent = getAdjacentOccupiedSeats($layout, $x, $y, $isOccupied);
+            $seat = $layout[$y][$x];
+
+            if ($seat == PositionType::EMPTY_SEAT && $adjacent == 0) {
+                $seat = PositionType::OCCUPIED_SEAT;
+            } elseif ($seat == PositionType::OCCUPIED_SEAT && $adjacent >= $limit) {
+                $seat = PositionType::EMPTY_SEAT;
+            }
+
+            array_push($nextRow, $seat);
+        }
+
+        array_push($nextLayout, $nextRow);
     }
 
-    $count = 0;
+    return $nextLayout;
+}
 
-    foreach ($currentLayout as $row) {
-        foreach ($row as $seat) {
-            if ($seat == PositionType::OCCUPIED_SEAT) {
-                $count++;
-            }
+/**
+ * @param PositionType[][] $layout
+ * @param callable(PositionType[][], int, int, int, int): bool $isOccupied
+ */
+function getAdjacentOccupiedSeats(array &$layout, int $x, int $y, callable $isOccupied): int
+{
+    $count = 0;
+    $deltas = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+
+    foreach ($deltas as [$dx, $dy]) {
+        if ($isOccupied($layout, $x, $y, $dx, $dy)) {
+            $count++;
         }
     }
 
@@ -79,106 +155,6 @@ enum PositionType: string
     case FLOOR = ".";
     case EMPTY_SEAT = "L";
     case OCCUPIED_SEAT = "#";
-}
-
-/** @param PositionType[][] $layout */
-function createNextLayout(array &$layout, callable $fn, int $limit): array
-{
-    $nextLayout = [];
-
-    for ($y = 0; $y < count($layout); $y++) {
-        $nextRow = [];
-
-        for ($x = 0; $x < count($layout[$y]); $x++) {
-            $adjacent = $fn($layout, $x, $y);
-            $seat = $layout[$y][$x];
-
-            if ($seat == PositionType::EMPTY_SEAT && $adjacent == 0) {
-                $seat = PositionType::OCCUPIED_SEAT;
-            } else if ($seat == PositionType::OCCUPIED_SEAT && $adjacent >= $limit) {
-                $seat = PositionType::EMPTY_SEAT;
-            }
-
-            array_push($nextRow, $seat);
-        }
-
-        array_push($nextLayout, $nextRow);
-    }
-
-    return $nextLayout;
-}
-
-function getAdjacentOccupiedSeats(array &$layout, int $x, int $y): int
-{
-    $count = 0;
-    $width = count($layout[$y]);
-    $height = count($layout);
-    $deltas = [
-        [-1, +0],
-        [+1, +0],
-        [+0, -1],
-        [+0, +1],
-        [-1, -1],
-        [-1, +1],
-        [+1, -1],
-        [+1, +1],
-    ];
-
-    foreach ($deltas as [$dx, $dy]) {
-        $ax = $x + $dx;
-        $ay = $y + $dy;
-
-        if (
-            0 <= $ax && $ax < $width &&
-            0 <= $ay && $ay < $height &&
-            $layout[$ay][$ax] == PositionType::OCCUPIED_SEAT
-        ) {
-            $count++;
-        }
-    }
-
-    return $count;
-}
-
-function getAdjacentOccupiedSeatsTwo(array &$layout, int $x, int $y): int
-{
-    $count = 0;
-    $width = count($layout[$y]);
-    $height = count($layout);
-    $deltas = [
-        [-1, +0],
-        [+1, +0],
-        [+0, -1],
-        [+0, +1],
-        [-1, -1],
-        [-1, +1],
-        [+1, -1],
-        [+1, +1],
-    ];
-
-    foreach ($deltas as [$dx, $dy]) {
-        $ax = $x + $dx;
-        $ay = $y + $dy;
-
-        // move in that direciton until we meet a seat or reach the end
-        while (
-            (0 <= $ax && $ax < $width) &&
-            (0 <= $ay && $ay < $height)
-        ) {
-            $seat = $layout[$ay][$ax];
-            if ($seat == PositionType::OCCUPIED_SEAT) {
-                $count++;
-                continue 2;
-            } elseif ($seat == PositionType::EMPTY_SEAT) {
-                continue 2;
-            }
-            $ax += $dx;
-            $ay += $dy;
-        }
-
-    }
-
-    return $count;
 }
 
 main();

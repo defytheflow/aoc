@@ -13,20 +13,23 @@ function main(): void
     assert($resultTwo == -1);
 }
 
-function solveOne(string $input): int
+/** @param string[] $input */
+function solveOne(array $input): int
 {
     return -1;
 }
 
-function solveTwo(string $input): int
+/** @param string[] $input */
+function solveTwo(array $input): int
 {
     return -1;
 }
 
-function parseInput(string $filename): string
+/** @return string[] */
+function parseInput(string $filename): array
 {
     $input = trim(file_get_contents(__DIR__ . "/" . $filename));
-    return $input;
+    return explode(PHP_EOL, $input);
 }
 
 main();

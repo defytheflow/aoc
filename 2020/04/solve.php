@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 function main(): void
 {
     $input = parseInput("input.txt");
@@ -159,7 +161,7 @@ class HairColor extends Field
 {
     public function isValid(): bool
     {
-        return preg_match("/^#[0-9a-f]{6}$/", $this->value);
+        return (bool) preg_match("/^#[0-9a-f]{6}$/", $this->value);
     }
 }
 
@@ -177,7 +179,7 @@ class PassportId extends Field
 {
     public function isValid(): bool
     {
-        return preg_match("/^[0-9]{9}$/", $this->value);
+        return (bool) preg_match("/^[0-9]{9}$/", $this->value);
     }
 }
 

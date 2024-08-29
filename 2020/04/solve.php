@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+namespace Day04;
 
 function main(): void
 {
@@ -58,7 +59,7 @@ function parseInput(string $filename): array
                     [$name, $value] = explode(":", $field);
                     $fieldName = FieldName::from($name);
 
-                    $className = (match ($fieldName) {
+                    $className = "\Day04\\" . (match ($fieldName) {
                         FieldName::BirthYear => "BirthYear",
                         FieldName::IssueYear => "IssueYear",
                         FieldName::ExpirationYear => "ExpirationYear",

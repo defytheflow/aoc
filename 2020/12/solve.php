@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+namespace Day12;
 
 function main(): void
 {
@@ -50,7 +51,7 @@ function solveOne(array $input): int
 function parseInput(string $filename): array
 {
     $input = trim(file_get_contents(__DIR__ . "/" . $filename));
-    return array_map("Action::fromString", explode(PHP_EOL, $input));
+    return array_map("\Day12\Action::fromString", explode(PHP_EOL, $input));
 }
 
 enum ActionType: string

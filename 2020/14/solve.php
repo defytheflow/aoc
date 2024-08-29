@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+namespace Day14;
 
 function main(): void
 {

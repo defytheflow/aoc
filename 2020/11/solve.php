@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+namespace Day11;
 
 function main(): void
 {
@@ -18,7 +19,7 @@ function main(): void
 /** @param PositionType[][] $input */
 function solveOne(array $input): int
 {
-    return solve($input, isOccupied: 'isImmediatelyAdjacent', limit: 4);
+    return solve($input, isOccupied: '\Day11\isImmediatelyAdjacent', limit: 4);
 }
 
 /** @param PositionType[][] $layout */
@@ -37,7 +38,7 @@ function isImmediatelyAdjacent(array &$layout, int $x, int $y, int $dx, int $dy)
 /** @param PositionType[][] $input */
 function solveTwo(array $input): int
 {
-    return solve($input, isOccupied: 'isDistantAdjacent', limit: 5);
+    return solve($input, isOccupied: '\Day11\isDistantAdjacent', limit: 5);
 }
 
 /** @param PositionType[][] $layout */
@@ -146,7 +147,7 @@ function parseInput(string $filename): array
 
     return array_map(
         function ($line) {
-            return array_map('PositionType::from', str_split($line));
+            return array_map('\Day11\PositionType::from', str_split($line));
         },
         explode(PHP_EOL, $input)
     );

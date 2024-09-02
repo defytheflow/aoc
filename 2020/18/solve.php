@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Day18;
 
 function main(): void
@@ -10,15 +11,25 @@ function main(): void
     $resultOne = solveOne($input);
     echo $resultOne, PHP_EOL;
     assert($resultOne == 6_640_667_297_513);
+
+    $resultTwo = solveTwo($input);
+    echo $resultTwo, PHP_EOL;
+    assert($resultTwo == 451_589_894_841_552);
 }
 
 /** @param string[] */
 function solveOne(array $input): int
 {
-    return array_reduce($input, fn ($total, $expr) => $total + calculate($expr), 0);
+    return array_reduce($input, fn($total, $expr) => $total + calculate($expr), 0);
 }
 
-function calculate(string $expr): int
+/** @param string[] */
+function solveTwo(array $input): int
+{
+    return array_reduce($input, fn($total, $expr) => $total + calculate($expr, addFirst: true), 0);
+}
+
+function calculate(string $expr, bool $addFirst = false): int
 {
     $openParen = strpos($expr, "(");
 
@@ -27,12 +38,27 @@ function calculate(string $expr): int
         $beforeParen = substr($expr, 0, $openParen);
         $insideParen = substr($expr, $openParen + 1, $closeParen - $openParen - 1);
         $afterParen = substr($expr, $closeParen + 1);
-        return calculate($beforeParen . calculate($insideParen) . $afterParen);
+
+        return calculate(
+            $beforeParen . calculate($insideParen, addFirst: $addFirst) . $afterParen,
+            addFirst: $addFirst
+        );
     }
 
     /** @var int[] */
     $stack = [];
     $tokens = tokenize($expr);
+
+    if ($addFirst) {
+        $addIndex = array_search("+", $tokens);
+
+        if ($addIndex !== false) {
+            $aIndex = $addIndex - 1;
+            $bIndex = $addIndex + 1;
+            array_splice($tokens, $aIndex, 3, (string) ($tokens[$aIndex] + $tokens[$bIndex]));
+            return calculate(join($tokens), addFirst: $addFirst);
+        }
+    }
 
     for ($i = 0; $i < count($tokens); $i++) {
         $token = $tokens[$i];
@@ -91,13 +117,13 @@ function tokenize(string $expr): array
     for ($i = 0; $i < strlen($expr); $i++) {
         if ($expr[$i] == "+" || $expr[$i] == "*") {
             array_push($tokens, $expr[$i]);
-        }
-        elseif (is_numeric($expr[$i])) {
+        } elseif (is_numeric($expr[$i])) {
             $buffer = "";
 
             for (; $i < strlen($expr) && is_numeric($expr[$i]); $i++) {
                 $buffer .= $expr[$i];
             }
+            $i--;
 
             array_push($tokens, $buffer);
         }

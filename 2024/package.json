@@ -1,0 +1,12 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "name": "adventofcode",
+  "module": "index.ts",
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

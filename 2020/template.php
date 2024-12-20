@@ -44,7 +44,7 @@ function parseInput(string $filename): array
         throw new \RuntimeException("File \"$filename\" not found");
     }
 
-    return explode(PHP_EOL, $input);
+    return explode(PHP_EOL, trim($input));
 }
 
 main();

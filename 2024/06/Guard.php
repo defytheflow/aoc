@@ -69,12 +69,12 @@ class Guard
     }
 }
 
-class Map
+readonly class Map
 {
     /**
      * @param string[][] $map
      */
-    public function __construct(private readonly array $map) {}
+    public function __construct(private array $map) {}
 
     public function tryAt(Position $pos): string|null
     {
@@ -105,9 +105,9 @@ class Map
     }
 }
 
-class Position
+readonly class Position
 {
-    public function __construct(public readonly int $x, public readonly int $y) {}
+    public function __construct(public int $x, public int $y) {}
 
     public function towards(Direction $dir): self
     {

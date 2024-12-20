@@ -14,15 +14,32 @@ function main(): void
     echo $resultOne, PHP_EOL;
     assert($resultOne == 2_299_996_598_890);
 
-    // $resultTwo = solveTwo($input);
-    // echo $resultTwo, PHP_EOL;
-    // assert($resultTwo == -1);
+    $resultTwo = solveTwo($input);
+    echo $resultTwo, PHP_EOL;
+    assert($resultTwo == 362_646_859_298_554);
 }
 
 /**
  * @param Equation[] $input
  */
 function solveOne(array $input): int
+{
+    return solve($input, [Operator::PLUS, Operator::STAR]);
+}
+
+/**
+ * @param Equation[] $input
+ */
+function solveTwo(array $input): int
+{
+    return solve($input, [Operator::PLUS, Operator::STAR, Operator::CONCAT]);
+}
+
+/**
+ * @param Equation[] $input
+ * @param Operator[] $operators
+ */
+function solve(array $input, array $operators): int
 {
     $equations = &$input;
 
@@ -31,18 +48,10 @@ function solveOne(array $input): int
             fn($equation) => $equation->testValue,
             array_filter(
                 $equations,
-                fn($equation) => $equation->isSolvable(),
+                fn($equation) => $equation->isSolvable($operators),
             )
         )
     );
-}
-
-/**
- * @param Equation[] $input
- */
-function solveTwo(array $input): int
-{
-    return -1;
 }
 
 /**

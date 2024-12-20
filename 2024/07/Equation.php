@@ -19,9 +19,12 @@ readonly class Equation
         return new self($testValue, $numbers);
     }
 
-    public function isSolvable(): bool
+    /**
+     * @param Operator[] $operators
+     */
+    public function isSolvable(array $operators): bool
     {
-        $operatorPermutations = $this->permutations(count($this->numbers));
+        $operatorPermutations = $this->permutations($operators, count($this->numbers));
 
         foreach ($operatorPermutations as $operators) {
             $result = $this->numbers[0];
@@ -32,6 +35,7 @@ readonly class Equation
                 $result = match ($operators[$i - 1]) {
                     Operator::PLUS => $result + $number,
                     Operator::STAR => $result * $number,
+                    Operator::CONCAT => (int) ("$result" . "$number")
                 };
             }
 
@@ -44,29 +48,30 @@ readonly class Equation
     }
 
     /**
+     * @param Operator[] $operators
      * @return Operator[][]
      */
-    private static function permutations(int $count): array
+    private static function permutations(array $operators, int $count): array
     {
         if ($count == 2) {
-            return [
-                [Operator::PLUS],
-                [Operator::STAR],
-            ];
+            return array_map(fn($operator) => [$operator], $operators);
         }
 
         $perms = [];
 
-        foreach (self::permutations($count - 1) as $perm) {
-            $perms[] = [...$perm, Operator::PLUS];
-            $perms[] = [...$perm, Operator::STAR];
+        foreach (self::permutations($operators, $count - 1) as $perm) {
+            foreach ($operators as $operator) {
+                $perms[] = [...$perm, $operator];
+            }
         }
 
         return $perms;
     }
 }
 
-enum Operator {
+enum Operator
+{
     case PLUS;
     case STAR;
+    case CONCAT;
 }

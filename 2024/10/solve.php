@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Day__;
+namespace Day10;
 
 function main(): void
 {
@@ -12,15 +12,31 @@ function main(): void
     echo $resultOne, PHP_EOL;
     assert($resultOne == 593);
 
-    // $resultTwo = solveTwo($input);
-    // echo $resultTwo, PHP_EOL;
-    // assert($resultTwo == -1);
+    $resultTwo = solveTwo($input);
+    echo $resultTwo, PHP_EOL;
+    assert($resultTwo == 1192);
 }
 
 /**
  * @param int[][] $input
  */
 function solveOne(array $input): int
+{
+    return solve($input, unique: true);
+}
+
+/**
+ * @param int[][] $input
+ */
+function solveTwo(array $input): int
+{
+    return solve($input, unique: false);
+}
+
+/**
+ * @param int[][] $input
+ */
+function solve(array $input, bool $unique): int
 {
     $map = &$input;
     $sum = 0;
@@ -29,7 +45,7 @@ function solveOne(array $input): int
         foreach ($row as $x => $value) {
             if ($value == 0) {
                 $positions = positions($map, new Position(x: $x, y: $y));
-                $sum += score($positions);
+                $sum += score($positions, unique: $unique);
             }
         }
     }
@@ -80,17 +96,10 @@ function neighbors(array &$map, Position $pos): array
 /**
  * @param Position[] $positions
  */
-function score(array &$positions): int
+function score(array &$positions, bool $unique): int
 {
-    return count(array_unique(array_map("json_encode", $positions)));
-}
-
-/**
- * @param string[] $input
- */
-function solveTwo(array $input): int
-{
-    return -1;
+    $array = $unique ? array_unique(array_map("json_encode", $positions)) : $positions;
+    return count($array);
 }
 
 /**

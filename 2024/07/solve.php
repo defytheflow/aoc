@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Day07;
 
-require __DIR__ . '/Equation.php';
+require_once __DIR__ . '/Equation.php';
 
 function main(): void
 {

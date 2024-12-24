@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Day08;
 
+require_once __DIR__ . "/debug.php";
+
 const EMPTY_CHAR = '.';
 
 function main(): void
@@ -104,22 +106,6 @@ function findAntennaInLine(array &$map, Point $point): array
     }
 
     return $points;
-}
-
-/**
- * @param Tile[][] $map
- */
-function draw(array &$map): void
-{
-    foreach ($map as $row) {
-        echo "<div style='display: flex;'>";
-        foreach ($row as $tile) {
-            $bgColor = $tile->isAntinode ? "red" : "white";
-            echo "<div style='width: 20px; height: 20px; background-color: $bgColor; text-align: center;'>{$tile->char}</div>";
-        }
-        echo "</div>";
-    }
-    echo "</div>";
 }
 
 /**

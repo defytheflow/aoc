@@ -9,7 +9,12 @@ const HEIGHT = 103;
 const SECONDS = 100;
 
 require_once __DIR__ . "/Robot.php";
-require_once __DIR__ . "/debug.php";
+require_once __DIR__ . "/Map.php";
+
+// 6 - incorrect (i really meant 7)
+// 7 - incorrect
+// 53 - incorrect
+// 5 - incorrect
 
 function main(): void
 {
@@ -30,66 +35,15 @@ function main(): void
 function solveOne(array $input): int
 {
     $robots = &$input;
+    $map = Map::create($robots);
 
     for ($i = 0; $i < SECONDS; $i++) {
         foreach ($robots as $robot) {
-            $robot->move();
+            $map->move($robot);
         }
     }
 
-    return safety($robots);
-}
-
-/**
- * @param Robot[] $robots
- */
-function safety(array &$robots): int
-{
-    $topLeft = 0;
-    for ($y = 0; $y < floor(HEIGHT / 2); $y++) {
-        for ($x = 0; $x < floor(WIDTH / 2); $x++) {
-            foreach ($robots as $robot) {
-                if ($robot->pos()->x == $x && $robot->pos()->y == $y) {
-                    $topLeft++;
-                }
-            }
-        }
-    }
-
-    $topRight = 0;
-    for ($y = 0; $y < floor(HEIGHT / 2); $y++) {
-        for ($x = ceil(WIDTH / 2); $x < WIDTH; $x++) {
-            foreach ($robots as $robot) {
-                if ($robot->pos()->x == $x && $robot->pos()->y == $y) {
-                    $topRight++;
-                }
-            }
-        }
-    }
-
-    $bottomLeft = 0;
-    for ($y = ceil(HEIGHT / 2); $y < HEIGHT; $y++) {
-        for ($x = 0; $x < floor(WIDTH / 2); $x++) {
-            foreach ($robots as $robot) {
-                if ($robot->pos()->x == $x && $robot->pos()->y == $y) {
-                    $bottomLeft++;
-                }
-            }
-        }
-    }
-
-    $bottomRight = 0;
-    for ($y = ceil(HEIGHT / 2); $y < HEIGHT; $y++) {
-        for ($x = ceil(WIDTH / 2); $x < WIDTH; $x++) {
-            foreach ($robots as $robot) {
-                if ($robot->pos()->x == $x && $robot->pos()->y == $y) {
-                    $bottomRight++;
-                }
-            }
-        }
-    }
-
-    return $topLeft * $topRight * $bottomLeft * $bottomRight;
+    return $map->safety();
 }
 
 /**

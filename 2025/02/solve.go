@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"os"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -14,11 +13,11 @@ func main() {
 
 	resultOne := solveOne(input)
 	fmt.Println(resultOne)
-	assert(resultOne == 64215794229, "solveOne()")
+	assert(resultOne == 64_215_794_229, "solveOne()")
 
 	resultTwo := solveTwo(input)
 	fmt.Println(resultTwo)
-	assert(resultTwo == 85513235135, "solveTwo()")
+	assert(resultTwo == 85_513_235_135, "solveTwo()")
 }
 
 func solveOne(input string) int {
@@ -78,43 +77,12 @@ func isInvalidIdTwo(id string) bool {
 	divisors := divisors(len(id))
 
 	for _, divisor := range divisors {
-		if areAllChunksSame(id, divisor) {
+		if areAllChunksEqual(splitIntoChunks(id, divisor)) {
 			return true
 		}
 	}
 
 	return false
-}
-
-func areAllChunksSame(s string, n int) bool {
-	if n <= 0 {
-		return false
-	}
-	if len(s) == 0 {
-		return true
-	}
-	if len(s) < n {
-		return false
-	}
-
-	chunks := make([]string, 0)
-	for i := 0; i < len(s); i += n {
-		end := min(i+n, len(s))
-		chunks = append(chunks, s[i:end])
-	}
-
-	if len(chunks) == 1 {
-		return true
-	}
-
-	firstChunk := chunks[0]
-	for _, chunk := range chunks[1:] {
-		if chunk != firstChunk {
-			return false
-		}
-	}
-
-	return true
 }
 
 func divisors(n int) []int {
@@ -135,8 +103,29 @@ func divisors(n int) []int {
 		}
 	}
 
-	sort.Ints(divisors)
 	return divisors
+}
+
+func splitIntoChunks(id string, divisor int) []string {
+	chunks := make([]string, 0)
+
+	for i := 0; i < len(id); i += divisor {
+		chunks = append(chunks, id[i:i+divisor])
+	}
+
+	return chunks
+}
+
+func areAllChunksEqual(chunks []string) bool {
+	firstChunk := chunks[0]
+
+	for _, chunk := range chunks[1:] {
+		if chunk != firstChunk {
+			return false
+		}
+	}
+
+	return true
 }
 
 func parseInput(filename string) string {

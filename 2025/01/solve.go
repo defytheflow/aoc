@@ -16,18 +16,18 @@ const LEFT byte = 'L'
 const RIGHT byte = 'R'
 
 func main() {
-	input := parse_input("input.txt")
+	input := parseInput("input.txt")
 
-	result_one := solve_one(input)
-	fmt.Println(result_one)
-	assert(result_one == 962, "solve_one()")
+	resultOne := solveOne(input)
+	fmt.Println(resultOne)
+	assert(resultOne == 962, "solve_one()")
 
-	result_two := solve_two(input)
-	fmt.Println(result_two)
-	assert(result_two == 5782, "solve_two()")
+	resultTwo := solveTwo(input)
+	fmt.Println(resultTwo)
+	assert(resultTwo == 5782, "solve_two()")
 }
 
-func solve_one(input string) int {
+func solveOne(input string) int {
 	dial := DIAL_START_NUMBER
 	zeros := 0
 
@@ -49,7 +49,7 @@ func solve_one(input string) int {
 		}
 
 		distance %= TOTAL_NUMBERS
-		prev_dial := dial
+		prevDial := dial
 
 		switch direction {
 		case LEFT:
@@ -69,14 +69,14 @@ func solve_one(input string) int {
 		}
 
 		if DEBUG {
-			fmt.Printf("DIR - %c, DIST - %2d, DIAL - %d --> %d\n", direction, distance, prev_dial, dial)
+			fmt.Printf("DIR - %c, DIST - %2d, DIAL - %d --> %d\n", direction, distance, prevDial, dial)
 		}
 	}
 
 	return zeros
 }
 
-func solve_two(input string) int {
+func solveTwo(input string) int {
 	dial := DIAL_START_NUMBER
 	zeros := 0
 
@@ -97,46 +97,46 @@ func solve_two(input string) int {
 			return -1
 		}
 
-		full_rotations := distance / TOTAL_NUMBERS
-		zeros += full_rotations
+		fullRotations := distance / TOTAL_NUMBERS
+		zeros += fullRotations
 
-		prev_dial := dial
+		prevDial := dial
 		distance %= TOTAL_NUMBERS
 
 		assert(distance > 0, "distance invariant")
 
 		switch direction {
 		case LEFT:
-			new_dial := dial - distance
+			newDial := dial - distance
 
-			if new_dial >= 0 {
-				dial = new_dial
+			if newDial >= 0 {
+				dial = newDial
 			} else {
-				dial = TOTAL_NUMBERS + new_dial
+				dial = TOTAL_NUMBERS + newDial
 
-				if prev_dial != 0 {
+				if prevDial != 0 {
 					zeros += 1
 				}
 
 				if DEBUG {
-					fmt.Printf("DIR - %c, DIST - %2d, DIAL - %2d -> %2d, ZEROS - %d\n", direction, distance, prev_dial, dial, zeros)
+					fmt.Printf("DIR - %c, DIST - %2d, DIAL - %2d -> %2d, ZEROS - %d\n", direction, distance, prevDial, dial, zeros)
 				}
 				continue
 			}
 		case RIGHT:
-			new_dial := dial + distance
+			newDial := dial + distance
 
-			if new_dial < TOTAL_NUMBERS {
-				dial = new_dial
+			if newDial < TOTAL_NUMBERS {
+				dial = newDial
 			} else {
-				dial = new_dial - TOTAL_NUMBERS
+				dial = newDial - TOTAL_NUMBERS
 
-				if prev_dial != 0 {
+				if prevDial != 0 {
 					zeros += 1
 				}
 
 				if DEBUG {
-					fmt.Printf("DIR - %c, DIST - %2d, DIAL - %2d -> %2d, ZEROS - %d\n", direction, distance, prev_dial, dial, zeros)
+					fmt.Printf("DIR - %c, DIST - %2d, DIAL - %2d -> %2d, ZEROS - %d\n", direction, distance, prevDial, dial, zeros)
 				}
 				continue
 			}
@@ -144,19 +144,19 @@ func solve_two(input string) int {
 
 		assert(dial >= 0 && dial <= TOTAL_NUMBERS-1, "dial invariant")
 
-		if prev_dial != 0 && dial == 0 {
+		if prevDial != 0 && dial == 0 {
 			zeros += 1
 		}
 
 		if DEBUG {
-			fmt.Printf("DIR - %c, DIST - %2d, DIAL - %2d -> %2d, ZEROS - %d\n", direction, distance, prev_dial, dial, zeros)
+			fmt.Printf("DIR - %c, DIST - %2d, DIAL - %2d -> %2d, ZEROS - %d\n", direction, distance, prevDial, dial, zeros)
 		}
 	}
 
 	return zeros
 }
 
-func parse_input(filename string) string {
+func parseInput(filename string) string {
 	content, err := os.ReadFile(filename)
 
 	if err != nil {

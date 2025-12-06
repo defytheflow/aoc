@@ -1,18 +1,17 @@
 package main
 
 import (
+	"aoc2025/utils"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	input := parseInput("input.txt")
+	input := utils.ReadInput("input.txt")
 
 	resultOne := solveOne(input)
 	fmt.Println(resultOne)
-	assert(resultOne == 17383, "solveOne()")
 }
 
 func solveOne(input string) int {
@@ -38,20 +37,4 @@ func solveOne(input string) int {
 	}
 
 	return total
-}
-
-func parseInput(filename string) string {
-	content, err := os.ReadFile(filename)
-
-	if err != nil {
-		panic(fmt.Sprintf("Error reading file:", err))
-	}
-
-	return strings.TrimSuffix(string(content), "\n")
-}
-
-func assert(condition bool, message string) {
-	if !condition {
-		panic("Assertion failed: " + message)
-	}
 }

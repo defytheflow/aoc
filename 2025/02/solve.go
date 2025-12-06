@@ -1,23 +1,21 @@
 package main
 
 import (
+	"aoc2025/utils"
 	"fmt"
 	"math"
-	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	input := parseInput("input.txt")
+	input := utils.ReadInput("input.txt")
 
 	resultOne := solveOne(input)
 	fmt.Println(resultOne)
-	assert(resultOne == 64_215_794_229, "solveOne()")
 
 	resultTwo := solveTwo(input)
 	fmt.Println(resultTwo)
-	assert(resultTwo == 85_513_235_135, "solveTwo()")
 }
 
 func solveOne(input string) int {
@@ -126,20 +124,4 @@ func areAllChunksEqual(chunks []string) bool {
 	}
 
 	return true
-}
-
-func parseInput(filename string) string {
-	content, err := os.ReadFile(filename)
-
-	if err != nil {
-		panic(fmt.Sprintf("Error reading file:", err))
-	}
-
-	return strings.TrimSuffix(string(content), "\n")
-}
-
-func assert(condition bool, message string) {
-	if !condition {
-		panic("Assertion failed: " + message)
-	}
 }

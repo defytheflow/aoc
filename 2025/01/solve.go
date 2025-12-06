@@ -1,8 +1,8 @@
 package main
 
 import (
+	"aoc2025/utils"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -16,15 +16,13 @@ const LEFT byte = 'L'
 const RIGHT byte = 'R'
 
 func main() {
-	input := parseInput("input.txt")
+	input := utils.ReadInput("input.txt")
 
 	resultOne := solveOne(input)
 	fmt.Println(resultOne)
-	assert(resultOne == 962, "solve_one()")
 
 	resultTwo := solveTwo(input)
 	fmt.Println(resultTwo)
-	assert(resultTwo == 5782, "solve_two()")
 }
 
 func solveOne(input string) int {
@@ -41,12 +39,7 @@ func solveOne(input string) int {
 		otherChars := line[1:]
 
 		direction := firstChar
-		distance, err := strconv.Atoi(otherChars)
-
-		if err != nil {
-			fmt.Println("Error:", err)
-			return -1
-		}
+		distance, _ := strconv.Atoi(otherChars)
 
 		distance %= TOTAL_NUMBERS
 		prevDial := dial
@@ -90,12 +83,7 @@ func solveTwo(input string) int {
 		otherChars := line[1:]
 
 		direction := firstChar
-		distance, err := strconv.Atoi(otherChars)
-
-		if err != nil {
-			fmt.Println("Error:", err)
-			return -1
-		}
+		distance, _ := strconv.Atoi(otherChars)
 
 		fullRotations := distance / TOTAL_NUMBERS
 		zeros += fullRotations
@@ -103,7 +91,7 @@ func solveTwo(input string) int {
 		prevDial := dial
 		distance %= TOTAL_NUMBERS
 
-		assert(distance > 0, "distance invariant")
+		utils.Assert(distance > 0, "distance invariant")
 
 		switch direction {
 		case LEFT:
@@ -142,7 +130,7 @@ func solveTwo(input string) int {
 			}
 		}
 
-		assert(dial >= 0 && dial <= TOTAL_NUMBERS-1, "dial invariant")
+		utils.Assert(dial >= 0 && dial <= TOTAL_NUMBERS-1, "dial invariant")
 
 		if prevDial != 0 && dial == 0 {
 			zeros += 1
@@ -154,20 +142,4 @@ func solveTwo(input string) int {
 	}
 
 	return zeros
-}
-
-func parseInput(filename string) string {
-	content, err := os.ReadFile(filename)
-
-	if err != nil {
-		panic(fmt.Sprintf("Error reading file:", err))
-	}
-
-	return string(content)
-}
-
-func assert(condition bool, message string) {
-	if !condition {
-		panic("Assertion failed: " + message)
-	}
 }

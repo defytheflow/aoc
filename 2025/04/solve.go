@@ -3,7 +3,6 @@ package main
 import (
 	"aoc2025/utils"
 	"fmt"
-	"strings"
 )
 
 const ROLL_OF_PAPER rune = '@'
@@ -21,7 +20,7 @@ func main() {
 }
 
 func solveOne(input string) int {
-	matrix := parseToMatrix(input)
+	matrix := utils.ParseToMatrix(input)
 	rolls := 0
 
 	for y, row := range matrix {
@@ -40,7 +39,7 @@ func solveOne(input string) int {
 }
 
 func solveTwo(input string) int {
-	matrix := parseToMatrix(input)
+	matrix := utils.ParseToMatrix(input)
 	removedRolls := 0
 	didRemove := true
 
@@ -65,16 +64,6 @@ func solveTwo(input string) int {
 	}
 
 	return removedRolls
-}
-
-func parseToMatrix(input string) [][]rune {
-	var matrix [][]rune
-
-	for _, line := range strings.Split(input, "\n") {
-		matrix = append(matrix, []rune(line))
-	}
-
-	return matrix
 }
 
 func getNeighbors(y int, x int, matrix [][]rune) []rune {

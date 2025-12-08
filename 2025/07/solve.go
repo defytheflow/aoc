@@ -15,23 +15,17 @@ func main() {
 
 	resultOne := solveOne(input)
 	fmt.Println(resultOne)
+
+	resultTwo := solveTwo(input)
+	fmt.Println(resultTwo)
 }
 
 func solveOne(input string) int {
 	matrix := utils.ParseToMatrix(input)
-	placeBeam(matrix)
+	startY, startX := findStart(matrix)
+	matrix[startY][startX] = BEAM
 	splits := placeBeams(matrix)
 	return splits
-}
-
-func placeBeam(matrix [][]rune) {
-	for y, line := range matrix {
-		for x, char := range line {
-			if char == START {
-				matrix[y+1][x] = BEAM
-			}
-		}
-	}
 }
 
 func placeBeams(matrix [][]rune) int {
@@ -56,6 +50,50 @@ func placeBeams(matrix [][]rune) int {
 	}
 
 	return splits
+}
+
+func solveTwo(input string) int {
+	matrix := utils.ParseToMatrix(input)
+	startY, startX := findStart(matrix)
+	memo := map[[2]int]int{}
+	return countPaths(memo, matrix, startY+1, startX)
+}
+
+func countPaths(memo map[[2]int]int, matrix [][]rune, y, x int) int {
+	if y < 0 || y >= len(matrix) || x < 0 || x >= len(matrix[0]) {
+		return 1
+	}
+
+	pos := [2]int{y, x}
+	if val, ok := memo[pos]; ok {
+		return val
+	}
+
+	var total int
+	cell := matrix[y][x]
+
+	switch cell {
+	case EMPTY:
+		total = countPaths(memo, matrix, y+1, x)
+	case SPLITTER:
+		left := countPaths(memo, matrix, y+1, x-1)
+		right := countPaths(memo, matrix, y+1, x+1)
+		total = left + right
+	}
+
+	memo[pos] = total
+	return total
+}
+
+func findStart(matrix [][]rune) (int, int) {
+	for y, row := range matrix {
+		for x, cell := range row {
+			if cell == START {
+				return y, x
+			}
+		}
+	}
+	return -1, -1
 }
 
 func safeGet(matrix [][]rune, y int, x int) rune {
